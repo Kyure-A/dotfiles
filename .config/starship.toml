@@ -1,0 +1,8 @@
+[directory]
+#ディレクトリ表示
+truncation_length = 100
+truncate_to_repo = false
+
+[time]
+disabled = false
+use_12hr = false
