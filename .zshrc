@@ -1,4 +1,4 @@
-
+#
 HISTFILE=~/.zhistory
 HISTSIZE=100000
 SAVEHIST=100000
@@ -65,24 +65,20 @@ export LESS_TERMCAP_so=$'\E[01;47;34m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;36m'
 
-# zplugin
-# なんか知らないうちに開発者がキレてリポジトリが消えたらしくてワロタ、移行とかなにやらを検討
-source ~/.config/zplugin/zplugin.zsh
-autoload -Uz _zplugin
-(( ${+_comps} )) && _comps[zplugin]=_zplugin
+# zplug
 
-zplugin light b4b4r07/enhancd
-ENHANCD_FILTER=peco; export ENHANCD_FILTER
-zplugin light zsh-users/zsh-syntax-highlighting # fish like syntax highlighting
-zplugin light zsh-users/zsh-history-substring-search
+# enhancd
+# git clone https://github.com/b4b4r07/enhancd ~/.config/enhancd/
+source ~/.config/enhancd/enhancd.plugin.zsh
 
 # Antigen
 source ~/.config/antigen/antigen.zsh
 antigen bundle mollifier/anyframe
 
-# powerline
-powerline-daemon -q
-. /usr/share/powerline/bindings/zsh/powerline.zsh # powerline と powerline-fonts のインストール後
+# thefuck
+eval $(thefuck --alias)
+# You can use whatever you want as an alias, like for Mondays:
+eval $(thefuck --alias FUCK)
 
 # starship
 # curl -sS https://starship.rs/install.sh | sh
@@ -99,3 +95,12 @@ fi
 # bind UP and DOWN arrow keys to history substring search
 zmodload zsh/terminfo
 
+# Load a few important annexes, without Turbo
+# (this is currently required for annexes)
+zinit light-mode for \
+    zdharma-continuum/zinit-annex-as-monitor \
+    zdharma-continuum/zinit-annex-bin-gem-node \
+    zdharma-continuum/zinit-annex-patch-dl \
+    zdharma-continuum/zinit-annex-rust
+
+### End of Zinit's installer chunk
