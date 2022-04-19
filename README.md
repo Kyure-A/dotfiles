@@ -5,6 +5,8 @@
 やるだけ / All you have to run to install this following code.
 
 ``` shell
-> curl -L raw.github.com/"${username}"/dotfiles/master/install.sh | bash
+> git clone http://github.com/Kyure-A/dotfiles.git
+> cd dotfiles
+> ./install.sh
 ```
 
