@@ -29,11 +29,11 @@ autoload -U compinit # 自動補完
 compinit -d
 autoload -U colors
 colors
-## autoload -U predict-on
-## predict-on # predict-on、死ぬほど重くてやめた
+# autoload -U predict-on
+# predict-on # predict-on、死ぬほど重くてやめた
 autoload -U zcalc
 
-## Alias
+# Alias
 alias cp="cp -i" # Confirm before overwriting something
 alias df='df -h' # Human-readable sizes
 alias free='free -m' # Show sizes in MB
@@ -65,19 +65,25 @@ export LESS_TERMCAP_so=$'\E[01;47;34m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;36m'
 
+#------------------------------------------------------------------------------------------------------------------------------
+
 # zplug
+# $ curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
+source ~/.zplug/init.zsh
+if ! zplug check; then
+    zplug install
+fi
 
-# enhancd
-# git clone https://github.com/b4b4r07/enhancd ~/.config/enhancd/
-source ~/.config/enhancd/enhancd.plugin.zsh
+zplug "b4b4r07/enhancd", use:"init.sh"
 
-# Antigen
-source ~/.config/antigen/antigen.zsh
-antigen bundle mollifier/anyframe
+zplug "mollifier/anyframe"
+
+zplug load
+
+#------------------------------------------------------------------------------------------------------------------------------
 
 # thefuck
 eval $(thefuck --alias)
-# You can use whatever you want as an alias, like for Mondays:
 eval $(thefuck --alias FUCK)
 
 # starship
@@ -94,13 +100,3 @@ fi
 
 # bind UP and DOWN arrow keys to history substring search
 zmodload zsh/terminfo
-
-# Load a few important annexes, without Turbo
-# (this is currently required for annexes)
-zinit light-mode for \
-    zdharma-continuum/zinit-annex-as-monitor \
-    zdharma-continuum/zinit-annex-bin-gem-node \
-    zdharma-continuum/zinit-annex-patch-dl \
-    zdharma-continuum/zinit-annex-rust
-
-### End of Zinit's installer chunk
