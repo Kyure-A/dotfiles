@@ -11,6 +11,7 @@
 !/.emacs.d/templates/**
 !/.emacs.d/early-init.el
 !/.emacs.d/init.el
+!/.emacs.d/banner.png
 !/.config/
 !/.config/starship.toml
 
