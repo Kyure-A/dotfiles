@@ -15,6 +15,6 @@
 !/.config/
 !/.config/starship.toml
 
-!/README.md
+!/README.org
 !/install.sh
 !.gitignore
