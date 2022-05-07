@@ -1,0 +1,22 @@
+## ignore
+/*
+/.**
+
+## not ignore
+
+!/.config/
+!/.config/starship.toml
+!/.emacs.d/
+!/.emacs.d/banner.png
+!/.emacs.d/early-init.el
+!/.emacs.d/elisp/
+!/.emacs.d/elisp/**
+!/.emacs.d/init.el
+!/.emacs.d/snippets/
+!/.emacs.d/snippets/**
+!/.emacs.d/templates/
+!/.emacs.d/templates/**
+!/.gitignore
+!/install.sh
+!/README.org
+!/.zshrc
