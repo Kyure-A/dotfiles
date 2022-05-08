@@ -18,6 +18,6 @@
 !/.emacs.d/templates/**
 !/.gitignore
 !/install.sh
+!/.LICENSE.txt
 !/README.org
 !/.zshrc
-!/.LICENSE.txt
