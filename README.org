@@ -10,7 +10,7 @@
 #+BEGIN_SRC zsh
 git clone http://github.com/Kyure-A/dotfiles.git
 cd dotfiles
-./install.sh
+zsh ./install.sh
 #+END_SRC
 
 ** Why chose GPL-3.0?
