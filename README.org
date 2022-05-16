@@ -14,6 +14,6 @@ zsh ./install.sh
 #+END_SRC
 
 ** Why chose GPL-3.0?
-I thought the licence was appropriate, but then I thought about it and remembered that it contains snippets of [[https://github.com/AndreaCrotti/yasnippet-snippets][yasnippet-snippets]].
+I thought the licence was appropriate, but then I thought about it and remembered that it contains snippets of [[https://github.com/AndreaCrotti/yasnippet-snippets][yasnippet-snippets]]. That is why I chose GPL-3.0 that were chosen [[https://github.com/AndreaCrotti/yasnippet-snippets][yasnippet-snippets]].
 
-That is why I chose GPL-3.0 that were chosen [[https://github.com/AndreaCrotti/yasnippet-snippets][yasnippet-snippets]].
+This is a 'licence infection' so to speak (but it does not mean I do not want to comply with the GPL, and I do not mean that in a malicious way - I rather appreciate it).
