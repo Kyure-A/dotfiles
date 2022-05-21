@@ -10,7 +10,7 @@
 #+BEGIN_SRC zsh
 git clone -- depth 1 git@github.com:Kyure-A/dotfiles.git
 cd dotfiles
-zsh ./linkmaker.sh
+zsh ./installer.sh
 #+END_SRC
 
 ** Why chose GPL-3.0?
