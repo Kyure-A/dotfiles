@@ -18,6 +18,7 @@
 !/.emacs.d/templates/**
 !/.gitignore
 !/install.sh
-!/.LICENSE.txt
+!/LICENSE.txt
+!/linkmaker.sh
 !/README.org
 !/.zshrc

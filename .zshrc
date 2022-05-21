@@ -13,7 +13,7 @@ setopt appendhistory # 上書きではなく、すぐに履歴を追加する
 setopt autocd # ディレクトリパスのみが入力された場合、そこにcdする
 setopt autolist # 補完を一覧で表示
 setopt automenu # TABで候補の切り替え
-setopt correct # 間違いを自動修正する
+setopt correct # 間違いを自動修正する (nyae のやつ)
 setopt extendedglob # 正規表現で*を使うことができる
 setopt histignorealldups # 新しいコマンドが重複している場合は、古いコマンドを削除する
 setopt inc_append_history # 保存したコマンドはすぐに履歴に追加されますが、そうでない場合はシェルが終了したときにのみ追加されます
@@ -69,7 +69,6 @@ export LESS_TERMCAP_us=$'\E[01;36m'
 #------------------------------------------------------------------------------------------------------------------------------
 
 # zplug
-# $ curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
 source ~/.zplug/init.zsh
 if ! zplug check; then
     zplug install
@@ -94,7 +93,6 @@ eval $(thefuck --alias)
 eval $(thefuck --alias FUCK)
 
 # starship
-# curl -sS https://starship.rs/install.sh | sh
 eval "$(starship init zsh)"
 
 #------------------------------------------------------------------------------------------------------------------------------
