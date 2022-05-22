@@ -8,7 +8,7 @@
 
 ** Installation
 #+BEGIN_SRC zsh
-git clone -- depth 1 git@github.com:Kyure-A/dotfiles.git
+git clone --depth 1 git@github.com:Kyure-A/dotfiles.git
 cd dotfiles
 zsh ./installer.sh
 #+END_SRC
