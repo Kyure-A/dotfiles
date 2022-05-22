@@ -2,8 +2,9 @@
 /*
 /.**
 
-## not ignore
+## accept
 
+!/.config/
 !/.config/starship.toml
 !/.emacs.d/
 !/.emacs.d/banner.png
