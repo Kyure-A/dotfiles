@@ -4,11 +4,18 @@
 
 ** Required package before install
 - git
-- zsh (default in advance)
+- zsh
 
 ** Installation
+If zsh is not the default, you can run the command below. (dotfiles are for zsh)
+#+BEGIN_SRC your-default-shell 
+chsh -s /bin/zsh
+exec $SHELL -l
+#+END_SRC
+
+To do the installation, all you have to do is copy and paste the 3 lines of command below and run it.
 #+BEGIN_SRC zsh
-git clone --depth 1 git@github.com:Kyure-A/dotfiles.git
+git clone --depth 1 https://github.com/Kyure-A/dotfiles.git
 cd dotfiles
 zsh ./installer.sh
 #+END_SRC
