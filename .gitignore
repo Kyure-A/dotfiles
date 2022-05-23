@@ -12,6 +12,7 @@
 !/.emacs.d/elisp/
 !/.emacs.d/elisp/**
 !/.emacs.d/init.el
+!/.emacs.d/README.org
 !/.emacs.d/snippets/
 !/.emacs.d/snippets/**
 !/.emacs.d/templates/

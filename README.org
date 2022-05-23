@@ -2,11 +2,11 @@
 #+AUTHOR: Kyure_A
 #+OPTIONS: toc:nil
 
-** Required package before install
+* Required package before install
 - git
 - zsh
 
-** Installation
+* Installation
 If zsh is not the default, you can run the command below. (dotfiles are for zsh)
 
 #+BEGIN_SRC your-default-shell 
@@ -24,7 +24,7 @@ zsh ./installer.sh
 
 If you want to adapt the settings, restart the shell or run ~exec $SHELL -l~ .
 
-** Why chose GPL-3.0?
+* Why chose GPL-3.0?
 I thought the licence was appropriate, but then I thought about it and remembered that it contains snippets of [[https://github.com/AndreaCrotti/yasnippet-snippets][yasnippet-snippets]]. That is why I chose GPL-3.0 that were chosen [[https://github.com/AndreaCrotti/yasnippet-snippets][yasnippet-snippets]].
 
 This is a 'licence infection' so to speak (but it does not mean I do not want to comply with the GPL, and I do not mean that in a malicious way - I rather appreciate it).
