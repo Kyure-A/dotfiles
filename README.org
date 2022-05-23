@@ -8,17 +8,21 @@
 
 ** Installation
 If zsh is not the default, you can run the command below. (dotfiles are for zsh)
+
 #+BEGIN_SRC your-default-shell 
 chsh -s /bin/zsh
 exec $SHELL -l
 #+END_SRC
 
 To do the installation, all you have to do is copy and paste the 3 lines of command below and run it.
+
 #+BEGIN_SRC zsh
 git clone --depth 1 https://github.com/Kyure-A/dotfiles.git
 cd dotfiles
 zsh ./installer.sh
 #+END_SRC
+
+If you want to adapt the settings, restart the shell or run ~exec $SHELL -l~ .
 
 ** Why chose GPL-3.0?
 I thought the licence was appropriate, but then I thought about it and remembered that it contains snippets of [[https://github.com/AndreaCrotti/yasnippet-snippets][yasnippet-snippets]]. That is why I chose GPL-3.0 that were chosen [[https://github.com/AndreaCrotti/yasnippet-snippets][yasnippet-snippets]].
