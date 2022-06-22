@@ -8,7 +8,7 @@ export SUDO_EDITOR=emacs
 
 #------------------------------------------------------------------------------------------------------------------------------
 
-# setopt
+## setopt
 setopt appendhistory # 上書きではなく、すぐに履歴を追加する
 setopt autocd # ディレクトリパスのみが入力された場合、そこにcdする
 setopt autolist # 補完を一覧で表示
@@ -24,30 +24,28 @@ setopt numericglobsort # ファイル名を数字順にソートする
 setopt print_eight_bit # 日本語ファイル名を表示可能にする
 setopt rcexpandparam # パラメータによる配列の拡張
 
-# Autoload
-autoload -U compinit # 自動補完
-compinit -d
+## Autoload
 autoload -U colors
 colors
 # autoload -U predict-on
 # predict-on # predict-on、死ぬほど重くてやめた
 autoload -U zcalc
 
-# Alias
+## Alias
 alias cp="cp -i" # Confirm before overwriting something
 alias df="df -h" # Human-readable sizes
 alias free="free -m" # Show sizes in MB
 alias ls="ls -a" #隠しファイルの表示
 
 bindkey -e # emacs mode
-bindkey '^[Oc' forward-word                                     
-bindkey '^[Od' backward-word                                    
-bindkey '^[[1;5D' backward-word                                
-bindkey '^[[1;5C' forward-word                                  
+bindkey '^[Oc' forward-word                     
+bindkey '^[Od' backward-word                     
+bindkey '^[[1;5D' backward-word                    
+bindkey '^[[1;5C' forward-word                     
 bindkey '^H' backward-kill-word # delete previous word with ctrl+backspace
 bindkey '^[[Z' undo # Shift+tab undo last action
 
-# zstyle
+## zstyle
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' # 大文字小文字を区別しないタブ補完。
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}" # 色付き補完(dirs/files/etcで色が異なる)
 zstyle ':completion:*' rehash true # パスに含まれる新しい実行ファイルを自動的に見つける 
@@ -56,7 +54,7 @@ zstyle ':completion:*' use-cache on # Speed up completions
 zstyle ':completion:*' cache-path ~/.zsh/cache
 WORDCHARS=${WORDCHARS//\/[&.;]} # 単語区切り文字の設定
 
-# less
+## less
 export LESS=-R
 export LESS_TERMCAP_mb=$'\E[01;32m'
 export LESS_TERMCAP_md=$'\E[01;32m'
@@ -68,13 +66,15 @@ export LESS_TERMCAP_us=$'\E[01;36m'
 
 #------------------------------------------------------------------------------------------------------------------------------
 
-# zplug
+## zplug
 source ~/.zplug/init.zsh
 if ! zplug check; then
     zplug install
 fi
 
 zplug "b4b4r07/enhancd", use:"init.sh"
+
+zplug "mafredri/zsh-async"
 
 zplug "zsh-users/zsh-autosuggestions"
 
@@ -84,26 +84,35 @@ zplug "zsh-users/zsh-syntax-highlighting"
 
 zplug "mollifier/anyframe"
 
+zplug "asdf-vm/asdf", as:command, dir:"~/.asdf"
+
 zplug load
 
 #------------------------------------------------------------------------------------------------------------------------------
 
-# thefuck
+## thefuck
 eval $(thefuck --alias)
 eval $(thefuck --alias FUCK)
 
-# starship
+## starship
 eval "$(starship init zsh)"
+
+## asdf
+. $HOME/.asdf/asdf.sh
+# append completions to fpath
+fpath=(~/.asdf/completions $fpath)
+# initialise completions with ZSH's compinit
+autoload -Uz compinit && compinit
 
 #------------------------------------------------------------------------------------------------------------------------------
 
-# コマンドがないときにいい感じにないパッケージを入れるか聞く
+## コマンドがないときにいい感じにないパッケージを入れるか聞く
 if [[ -r /usr/share/zsh/functions/command-not-found.zsh ]]; then
     source /usr/share/zsh/functions/command-not-found.zsh
     export PKGFILE_PROMPT_INSTALL_MISSING=1
 fi
 
-# Emacs libvterm との連携
+## Emacs libvterm との連携
 vterm_printf(){
     if [ -n "$TMUX" ] && ([ "${TERM%%-*}" = "tmux" ] || [ "${TERM%%-*}" = "screen" ] ); then
         # Tell tmux to pass the escape sequences through
@@ -116,5 +125,5 @@ vterm_printf(){
     fi
 }
 
-# bind UP and DOWN arrow keys to history substring search
+## bind UP and DOWN arrow keys to history substring search
 zmodload zsh/terminfo
