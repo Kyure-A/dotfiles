@@ -82,9 +82,20 @@ zplug "zsh-users/zsh-completions"
 
 zplug "zsh-users/zsh-syntax-highlighting"
 
+zplug "zsh-users/zsh-history-substring-search"
+
 zplug "mollifier/anyframe"
 
 zplug "asdf-vm/asdf", as:command, dir:"~/.asdf"
+
+if zplug check asdf-vm/asdf; then
+    ## asdf
+    . $HOME/.asdf/asdf.sh
+    # append completions to fpath
+    fpath=(~/.asdf/completions $fpath)
+    # initialise completions with ZSH's compinit
+    autoload -Uz compinit && compinit
+fi
 
 zplug load
 
@@ -96,13 +107,6 @@ eval $(thefuck --alias FUCK)
 
 ## starship
 eval "$(starship init zsh)"
-
-## asdf
-. $HOME/.asdf/asdf.sh
-# append completions to fpath
-fpath=(~/.asdf/completions $fpath)
-# initialise completions with ZSH's compinit
-autoload -Uz compinit && compinit
 
 #------------------------------------------------------------------------------------------------------------------------------
 
