@@ -12,18 +12,23 @@
 ;; 各マイナーモードの active-map にセットするキーバインドは各マイナーモードのブロックに書く
 ;; 各マイナーモードを有効化するときは global-minor-mode 節に書く
 
+;; todo:
+;; 初めて init.el を読み込んだときのみ実行してほしいコマンドをいい感じに初回のみ実行するようにできないか
+;; [] magit-status を centaur-tabs で使えるようにする
+;; [x] copilot.el が動かないのでなんとかする
+
 ;;; Code:
 
 (leaf *global-set-key
   :bind
   ;; C-c
-  ("C-c e b" . init/reload-init-el)
+  ("C-c e b" . my/reload-init-el)
   ("C-c e m" . menu-bar-mode)
   ("C-c l c" . leaf-convert-region-replace)
   ("C-c l t" . leaf-tree-mode)
   ("C-c m" . macrostep-mode)
   ("C-c o" . org-capture)
-  ("C-c s" . init/sly-start)
+  ("C-c s" . my/sly-start)
   ("C-c t" . centaur-tabs-counsel-switch-group)
   ;; C-x
   ("C-x g" . magit-status)
@@ -31,6 +36,7 @@
   ("C-x i" . nil)
   ("C-x i i" . ivy-yasnippet)
   ("C-x i n" . ivy-yasnippet-new-snippet)
+  ("C-x u" . undo-tree-visualize)
   ;; C-l
   ("C-l" . nil)
   ("C-l C-l" . lsp)
@@ -45,16 +51,17 @@
   ;; C-<any>
   ("C-a" . mwim-beginning-of-code-or-line)
   ("C-e" . mwim-end-of-code-or-line)
-  ("C-u" . undo)
-  ("C-r" . redo)
+  ("C-u" . undo-tree-undo)
+  ("C-r" . undo-tree-redo)
   ("C-s" . swiper)
   ("C-/" . other-window)
   ;; M-<any>
+  ("M-k" . backward-kill-line)
   ("M-x" . counsel-M-x)
   ("M-%" . vr/query-replace)
   ;; Modifier key
   ("<f2>" . vterm-toggle)
-  ("<f5>" . init/quickrun-sc)
+  ("<f5>" . my/quickrun-sc)
   ("RET" . smart-newline)
   ("C-<return>" . newline)
   ("C-<space>" . nil)
@@ -65,25 +72,22 @@
 (leaf *common-defun
   :preface
   ;; 適当
-  (defun init/reload-init-el ()
+  (defun my/reload-init-el ()
     "C-c e b"
     (interactive)
     (eval-buffer)
-    (init/remove-warnings-buffer)
-    (init/remove-messages-buffer))
-  (defun init/sly-start ()
-    "sly の挙動を slime に似せる"
+    (my/remove-warnings-buffer)
+    (my/remove-messages-buffer))
+  (defun my/toggle-centaur-tabs-local-mode()
     (interactive)
-    (split-window-right)
-    (sly))
-  (defun init/tide-start ()
-    (interactive)
-    (tide-setup)
-    (flycheck-mode t)
-    (setq flycheck-check-syntax-automatically '(save mode-enabled))
-    (eldoc-mode t)
-    (tide-hl-identifier-mode t)
-    (company-mode t)))
+    (call-interactively 'centaur-tabs-local-mode)
+    (call-interactively 'centaur-tabs-local-mode))
+  (defun backward-kill-line (arg)
+    "Kill ARG lines backward."
+    (interactive "p")
+    (kill-line (- 1 arg)))
+  
+  )
 
 
 
@@ -93,7 +97,7 @@
 
   (leaf auto-save
     :custom
-    (auto-save-file-name-transforms . '((".*" "~/tmp/" t)))
+    (auto-save-file-name-transforms . '((".*" "~/.tmp/" t)))
     (auto-save-list-file-prefix . nil)
     (auto-save-default . nil))
 
@@ -111,7 +115,7 @@
 
   (leaf files
     :custom
-    (backup-directory-alist . '((".*" . "~/.backup")))
+    (backup-directory-alist . '((".*" . "~/.tmp")))
     (create-lockfiles . nil)
     :config
     (let ((default-directory (locate-user-emacs-file "./elisp")))
@@ -119,6 +123,10 @@
       (normal-top-level-add-subdirs-to-load-path)))
 
   (leaf frame :config (set-frame-parameter nil 'unsplittable t))
+
+  (leaf lisp-interaction
+    :bind
+    (:lisp-interaction-mode-map ("C-j" . eval-print-last-sexp)))
   
   (leaf mule-cmds
     :config
@@ -136,7 +144,8 @@
     :custom
     (recentf-max-saved-items . 150)
     (recentf-auto-cleanup . 'never)
-    (recentf-exclude '("/dotfiles" "/recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/"))
+    (recentf-exclude
+     '("/dotfiles" "/recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.tmp/"))
     :config
     (leaf recentf-ext :ensure t))
 
@@ -149,12 +158,14 @@
 (leaf *inbox
   :doc "分類が面倒なパッケージを入れる"
   :config
+
+  (leaf dash :doc "リスト管理 ライブラリ" :ensure t)
   
   (leaf fast-scroll
     :ensure t
     :require t
-    :global-minor-mode t
     :hook
+    (after-init-hook . fast-scroll-mode)
     (fast-scroll-start-hook . (lambda () (flycheck-mode -1)))
     (fast-scroll-end-hook . (lambda () (flycheck-mode 1)))
     :custom
@@ -165,12 +176,14 @@
   
   (leaf gcmh
     :ensure t
-    :global-minor-mode t
+    :hook (after-init-hook . gcmh-mode)
     :custom (gcmh-verbose . t))
 
   (leaf goto-address :global-minor-mode t :hook (prog-mode-hook . goto-address-prog-mode))
 
   (leaf promise :doc "非同期処理" :ensure t)
+
+  (leaf s :doc "文字列ライブラリ" :ensure t)
 
   (leaf sublimity
     :doc "smooth-scrolling"
@@ -191,15 +204,6 @@
      ("s" . tetris-move-down)
      ("d" . tetris-move-right)
      ("RET" . tetris-move-bottom)))
-
-  (leaf undohist
-    :ensure t
-    :require t
-    :custom
-    (undohist-directory . "~/.emacs.d/undo-history")
-    (undohist-ignored-files . '("/tmp/" "COMMIT_EDITMSG" "/elpa"))
-    :config
-    (undohist-initialize))
   
   (leaf zone :doc "screen-saver" :require t :config (zone-when-idle 1200))
   
@@ -219,8 +223,6 @@
     :tag "company"
     :ensure t
     :global-minor-mode global-company-mode
-    :bind
-    (:company-active-map ( "<tab>" . company-complete-common-or-cycle))
     :custom
     (company-idle-delay . 0)
     (company-minimum-prefix-length . 2)
@@ -247,14 +249,17 @@
     (counsel-find-file-ignore-regexp . (regexp-opt '("./" "../")))
     (read-file-name-function . #'disable-counsel-find-file)
     :preface
-    (defun disable-counsel-find-file (&rest args)
-      "Disable `counsel-find-file' and use the original `find-file' with ARGS."
-      "https://qiita.com/takaxp/items/2fde2c119e419713342b#counsel-find-file-%E3%82%92%E4%BD%BF%E3%82%8F%E3%81%AA%E3%81%84"
-      (let ((completing-read-function #'completing-read-default)
-	    (completion-in-region-function #'completion--in-region))
-	(apply #'read-file-name-default args))))
+    (leaf disable-counsel-find-file
+      :url "https://qiita.com/takaxp/items/2fde2c119e419713342b#counsel-find-file-%E3%82%92%E4%BD%BF%E3%82%8F%E3%81%AA%E3%81%84"
+      :preface
+      (defun disable-counsel-find-file (&rest args)
+	"Disable `counsel-find-file' and use the original `find-file' with ARGS."
+	(let ((completing-read-function #'completing-read-default)
+	      (completion-in-region-function #'completion--in-region))
+	  (apply #'read-file-name-default args))))
+    )
 
-  (leaf delete-selection :global-minor-mode delete-selection-mode)
+  (leaf delete-selection :doc "delete から overwrite に改名したほうがいい" :global-minor-mode delete-selection-mode)
 
   (leaf dired
     :bind
@@ -262,19 +267,47 @@
      ("RET" . dired-open-in-accordance-with-situation)
      ("<right>" . dired-open-in-accordance-with-situation)
      ("<left>" . dired-up-directory)
-     ("a" . dired-find-file))
+     ("a" . dired-find-file)
+     ("e" . wdired-change-to-wdired-mode))
     :config
     (leaf dired-toggle :ensure t)
     (leaf dired-k :hook (dired-initial-position-hook . dired-k) :ensure t)
+    (leaf wdired :require t)
     (put 'dired-find-alternate-file 'disabled nil)
     :preface
-    (defun dired-open-in-accordance-with-situation ()
-      "https://nishikawasasaki.hatenablog.com/entry/20120222/1329932699"
-      (interactive)
-      (let ((file (dired-get-filename)))
-	(if (file-directory-p file)
-	    (dired-find-alternate-file)
-	  (dired-find-file)))))
+
+    (leaf dired-open-in-accordance-with-situation
+      :url "https://nishikawasasaki.hatenablog.com/entry/20120222/1329932699"
+      :preface
+      (defun dired-open-in-accordance-with-situation ()
+	(interactive)
+	(let ((file (dired-get-filename)))
+	  (if (file-directory-p file)
+	      (dired-find-alternate-file)
+	    (dired-find-file)))))
+
+    (leaf dired-zip-files
+      :url "https://stackoverflow.com/questions/1431351/how-do-i-uncompress-unzip-within-emacs"
+      :preface
+      (defun dired-zip-files (zip-file)
+	"Create an archive containing the marked files."
+	(interactive "sEnter name of zip file: ")
+	;; create the zip file
+	(let ((zip-file (if (string-match ".zip$" zip-file) zip-file (concat zip-file ".zip"))))
+	  (shell-command
+	   (concat "zip "
+		   zip-file
+		   " "
+		   (my/concat-string-list
+		    (mapcar
+		     '(lambda (filename)
+			(file-name-nondirectory filename))
+		     (dired-get-marked-files))))))
+	(revert-buffer))
+      
+      (defun my/concat-string-list (list)
+	"Return a string which is a concatenation of all elements of the list separated by spaces"
+	(mapconcat '(lambda (obj) (format "%s" obj)) list " "))))
   
   (leaf flycheck
     :ensure t
@@ -339,6 +372,22 @@
     :global-minor-mode smartparens-global-mode show-smartparens-global-mode
     :config
     (leaf smartparens-config :require t :after smartparens :hook (web-mode-hook . (lambda () (sp-pair "<#" "#>")))))
+
+  (leaf undohist
+    :ensure t
+    :require t
+    :custom
+    (undohist-directory . "~/.emacs.d/.tmp/undo-history")
+    (undohist-ignored-files . '("/.tmp/" "COMMIT_EDITMSG" "/elpa"))
+    :config
+    (undohist-initialize))
+
+  (leaf undo-tree
+    :ensure t
+    :global-minor-mode t
+    :custom
+    (undo-tree-auto-save-history . t)
+    (undo-tree-history-directory-alist . '(("." . "~/.emacs.d/.tmp"))))
   
   (leaf visual-regexp
     :doc "ビジュアライズされた置換"
@@ -370,6 +419,22 @@
 (leaf *programming
   :config
 
+  (leaf copilot
+    :el-get "zerolfx/copilot.el"
+    :hook (prog-mode . copilot-mode)
+    :custom (copilot-node-executable . "~/.asdf/installs/nodejs/17.9.1/bin/node")
+    :config
+    (delq 'company-preview-if-just-one-frontend company-frontends)
+    (leaf company-copilot-tab
+      :url "https://github.com/zerolfx/copilot.el/blob/9b13478720581580a045ac76ad68be075466a963/readme.md?plain=1#L152"
+      :after company
+      :bind (:company-active-map ( "<tab>" . company-copilot-tab))
+      :preface
+      (defun company-copilot-tab ()
+	(interactive)
+	(or (copilot-accept-completion)
+	    (company-indent-or-complete-common nil)))))
+
   (leaf editorconfig :ensure t :global-minor-mode t)
 
   (leaf lsp-mode
@@ -388,7 +453,9 @@
     (lsp-prefer-capf . t)
     (lsp-headerline-breadcrumb-mode . t))
 
-  (leaf magit :ensure t)
+  (leaf magit
+    :ensure t
+    :hook (magit-status-mode . my/toggle-centaur-tabs-local-mode))
 
   (leaf oj
     :doc "Competitive programming tools client for AtCoder, Codeforces"
@@ -411,7 +478,7 @@
     :config
     (push '("*quickrun*") popwin:special-display-config)
     :preface
-    (defun init/quickrun-sc (start end)
+    (defun my/quickrun-sc (start end)
       (interactive "r")
       (if mark-active
 	  (quickrun :start start :end end)
@@ -424,11 +491,11 @@
     (vterm-buffer-name-string . "vterm: %s")
     (vterm-keymap-exceptions
      . '("<f1>" "<f2>" "<f10>" "C-<return>" "C-<prior>" "C-<next>" "C-c" "C-g" "C-l" "C-s" "C-u" "C-v" "C-w" "C-x" "C-y" "M-v" "M-w" "M-x" "M-y"))
-    (vterm-toggle--vterm-buffer-p-function . 'init/term-mode-p)
+    (vterm-toggle--vterm-buffer-p-function . 'my/term-mode-p)
     :config
     (leaf vterm-toggle :ensure t)
     :preface
-    (defun init/term-mode-p(&optional args)
+    (defun my/term-mode-p(&optional args)
       (derived-mode-p 'eshell-mode 'term-mode 'shell-mode 'vterm-mode 'multi-term-mode)))
 
   (leaf *C++
@@ -479,8 +546,17 @@
     (leaf tide
       :ensure t
       :hook
-      (typescript-mode-hook . init/tide-start)
-      (before-save-hook . tide-format-before-save)))
+      (typescript-mode-hook . my/tide-start)
+      (before-save-hook . tide-format-before-save)
+      :config
+      (defun my/tide-start ()
+	(interactive)
+	(tide-setup)
+	(flycheck-mode t)
+	(setq flycheck-check-syntax-automatically '(save mode-enabled))
+	(eldoc-mode t)
+	(tide-hl-identifier-mode t)
+	(company-mode t))))
 
   (leaf *mark-up
     :config
@@ -571,10 +647,15 @@
   (leaf sly
     :tag "Common Lisp"
     :ensure t
+    :custom (inferior-lisp-program . "/usr/bin/sbcl")
     :config
     ;; (load "~/.roswell/helper.el")
     ;; (leaf sly-autoloads :require t)
-    :custom (inferior-lisp-program . "/usr/bin/sbcl"))
+    (defun my/sly-start ()
+      "sly の挙動を slime に似せる"
+      (interactive)
+      (split-window-right)
+      (sly)))
 
   )
 
@@ -585,7 +666,7 @@
 
   (leaf all-the-icons
     :ensure t
-    :config ;(all-the-icons-install-fonts t)
+    :config
     (leaf all-the-icons-dired :ensure t :hook (dired-mode . all-the-icons-dired-mode))
     (leaf all-the-icons-ivy :ensure t))
 
@@ -598,8 +679,6 @@
     :ensure t
     :require t
     :global-minor-mode t
-    :hook
-    (sly-mrepl-mode . centaur-tabs-local-mode)
     :custom
     (centaur-tabs-height . 30)
     (centaur-tabs-set-icons . t)
@@ -610,21 +689,21 @@
     (centaur-tabs-show-navigation-buttons . t)
     (centaur-tabs-adjust-buffer-order . t)
     (centaur-tabs-cycle-scope . 'groups)
-    (centaur-tabs-buffer-groups-function . 'init/centaur-tabs-buffer-groups)
+    (centaur-tabs-buffer-groups-function . 'my/centaur-tabs-buffer-groups)
     :config
     (centaur-tabs-headline-match)
     (centaur-tabs-enable-buffer-reordering)
     (centaur-tabs-change-fonts "arial" 90)
     :preface
-    (defun init/centaur-tabs-buffer-groups ()
+    (defun my/centaur-tabs-buffer-groups ()
       (list
        (cond
-	((derived-mode-p 'eshell-mode 'term-mode 'shell-mode 'vterm-mode 'multi-term-mode 'dired-mode)
+	((derived-mode-p 'eshell-mode 'term-mode 'shell-mode 'vterm-mode 'multi-term-mode 'dired-mode 'magit-mode)
 	 "Terminal")
+	((derived-mode-p 'emacs-lisp-mode)
+	 "Emacs")
 	((string-match-p (rx (or
 			      "\*dashboard\*"
-                              "\*Helm"
-                              "\*helm"
                               "\*tramp"
                               "\*Completions\*"
                               "\*sdcv\*"
@@ -635,10 +714,21 @@
                               ))
 			 (buffer-name))
 	 "Emacs")
+	((string-match-p (rx (or
+			      "\*copilot events\*"
+			      "\*copilot stderr\*"
+                              ))
+			 (buffer-name))
+	 "Copilot")
+	((string-match-p (rx (or
+			      "\*clang-error\*"
+			      "\*clang-output\*"
+                              ))
+			 (buffer-name))
+	 "Clang")
 	(t "Common")))))
 
   (leaf dashboard
-    :url "https://qiita.com/minoruGH/items/b47430af6537ee69c6ef"
     :ensure t
     :init (dashboard-setup-startup-hook)
     :bind
@@ -652,35 +742,46 @@
     (dashboard-center-content . t)
     (dashboard-set-heading-icons . t)
     (dashboard-set-file-icons . t)
-    (dashboard-startup-banner . "~/.emacs.d/banner.png") ;; https://nippori30.herokuapp.com/newgame/post で生成した
+    (dashboard-startup-banner . "~/.emacs.d/banner.png")
     (dashboard-banner-logo-title . "Kyure_A's Emacs")
     :config
     (leaf projectile :ensure t)
     :preface
-    (defun dashboard-goto-recent-files ()
-      "Go to recent files."
-      (interactive)
-      (funcall (local-key-binding "r")))
-    (defun open-dashboard ()
-      "Open the *dashboard* buffer and jump to the first widget."
-      (interactive)
-      (delete-other-windows)
-      ;; Refresh dashboard buffer
-      (if (get-buffer dashboard-buffer-name)
-	  (kill-buffer dashboard-buffer-name))
-      (dashboard-insert-startupify-lists)
-      (switch-to-buffer dashboard-buffer-name)
-      ;; Jump to the first section
-      (goto-char (point-min))
-      (dashboard-goto-recent-files))
-    (defun quit-dashboard ()
-      "Quit dashboard window."
-      (interactive)
-      (quit-window t)
-      (when (and dashboard-recover-layout-p
-		 (bound-and-true-p winner-mode))
-	(winner-undo)
-	(setq dashboard-recover-layout-p nil))))
+    (leaf dashboard-goto-recent-files
+      :url "https://qiita.com/minoruGH/items/b47430af6537ee69c6ef"
+      :preface
+      (defun dashboard-goto-recent-files ()
+	"Go to recent files."
+	(interactive)
+	(funcall (local-key-binding "r"))))
+
+    (leaf open-dashboard
+      :url "https://qiita.com/minoruGH/items/b47430af6537ee69c6ef"
+      :preface
+      (defun open-dashboard ()
+	"Open the *dashboard* buffer and jump to the first widget."
+	(interactive)
+	(delete-other-windows)
+	;; Refresh dashboard buffer
+	(if (get-buffer dashboard-buffer-name)
+	    (kill-buffer dashboard-buffer-name))
+	(dashboard-insert-startupify-lists)
+	(switch-to-buffer dashboard-buffer-name)
+	;; Jump to the first section
+	(goto-char (point-min))
+	(dashboard-goto-recent-files)))
+
+    (leaf quit-dashboard
+      :url "https://qiita.com/minoruGH/items/b47430af6537ee69c6ef"
+      :preface
+      (defun quit-dashboard ()
+	"Quit dashboard window."
+	(interactive)
+	(quit-window t)
+	(when (and dashboard-recover-layout-p
+		   (bound-and-true-p winner-mode))
+	  (winner-undo)
+	  (setq dashboard-recover-layout-p nil)))))
   
   (leaf display-line-numbers :config (custom-set-variables '(display-line-numbers-width-start t)))
 
@@ -695,7 +796,6 @@
   
   (leaf fira-code-mode
     :ensure t
-    :doc "M-x fira-code-mode-install-fonts"
     :hook (prog-mode-hook)
     :custom (fira-code-mode-disabled-ligatures '("<>" "[]" "#{" "#(" "#_" "#_(" "x")))
   
@@ -747,6 +847,12 @@
   )
 
 
+
+(unless (file-exists-p "~/.emacs.d/.tmp/first-startup-over")
+  (make-empty-file "~/.emacs.d/.tmp/first-startup-over")
+  (fira-code-mode-install-fonts t)
+  (all-the-icons-install-fonts t)
+  )
 
 (provide 'init)
 

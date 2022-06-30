@@ -86,6 +86,8 @@ zplug "zsh-users/zsh-history-substring-search"
 
 zplug "mollifier/anyframe"
 
+zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf
+
 zplug "asdf-vm/asdf", as:command, dir:"~/.asdf"
 
 if zplug check asdf-vm/asdf; then
