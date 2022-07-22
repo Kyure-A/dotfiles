@@ -5,7 +5,8 @@
 ## accept
 
 !/.config/
-!/.config/starship.toml
+!/.config/starship/starship.toml
+!/.config/zeno/config.yml
 !/.emacs.d/
 !/.emacs.d/banner.png
 !/.emacs.d/early-init.el
@@ -18,8 +19,8 @@
 !/.emacs.d/templates/
 !/.emacs.d/templates/**
 !/.gitignore
-!/installer.sh
+!/installer.zsh
 !/LICENSE.txt
-!/linkmaker.sh
+!/linkmaker.zsh
 !/README.org
 !/.zshrc

@@ -27,8 +27,8 @@ setopt rcexpandparam # パラメータによる配列の拡張
 ## Autoload
 autoload -U colors
 colors
-# autoload -U predict-on
-# predict-on # predict-on、死ぬほど重くてやめた
+autoload -U predict-on
+predict-on
 autoload -U zcalc
 
 ## Alias
@@ -37,6 +37,8 @@ alias df="df -h" # Human-readable sizes
 alias free="free -m" # Show sizes in MB
 alias ls="ls -a" #隠しファイルの表示
 
+## Keys
+setxkbmap -layout us
 bindkey -e # emacs mode
 bindkey '^[Oc' forward-word                     
 bindkey '^[Od' backward-word                     
@@ -88,6 +90,8 @@ zplug "mollifier/anyframe"
 
 zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf
 
+zplug "yuki-yano/zeno.zsh"
+
 zplug "asdf-vm/asdf", as:command, dir:"~/.asdf"
 
 if zplug check asdf-vm/asdf; then
@@ -103,12 +107,9 @@ zplug load
 
 #------------------------------------------------------------------------------------------------------------------------------
 
-## thefuck
-eval $(thefuck --alias)
-eval $(thefuck --alias FUCK)
-
 ## starship
 eval "$(starship init zsh)"
+export STARSHIP_CONFIG=~/.config/starship/starship.toml
 
 #------------------------------------------------------------------------------------------------------------------------------
 
