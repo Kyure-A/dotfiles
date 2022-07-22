@@ -5,8 +5,7 @@
 ## accept
 
 !/.config/
-!/.config/starship/starship.toml
-!/.config/zeno/config.yml
+!/.config/**
 !/.emacs.d/
 !/.emacs.d/banner.png
 !/.emacs.d/early-init.el
