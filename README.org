@@ -3,22 +3,22 @@
 #+OPTIONS: toc:nil
 
 ** What's this?
+[[https://twitter.com/Kyure_A][@Kyure_A]]'s dotfiles
 
-Kyure_A's dotfiles
++ Shell: *Zsh* + *zplug* + *Starship*
 
-Shell: *zsh* + *zplug* + *starship*
-Editor: *Emacs* + *leaf.el*
++ Editor: *Emacs* + *leaf.el*
 
+** Required packages
++ Git
+  
++ Zsh
 
-** Required package before install
-
-- git
-- zsh
-
++ Emacs
 
 ** Installation
 
-If zsh is not the default, you can run the command below. (dotfiles are for zsh)
+If zsh is not the default, you can run the command below. (This Installation commands are for zsh)
 
 #+BEGIN_SRC your-default-shell 
 chsh -s /bin/zsh
