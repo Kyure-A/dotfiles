@@ -18,6 +18,11 @@
 
 ;;; Code:
 
+(when (< emacs-major-version 27)
+  (require 'early-init))
+
+;; ---------------------------------------------------------------------------------------------- ;;
+
 (leaf *global-set-key
   :bind
   ;; C-c
@@ -67,7 +72,11 @@
   ("C-<space>" . nil)
   ("<backspace>" . smart-hungry-delete-backward-char)
   ("C-<prior>" . centaur-tabs-backward)
-  ("C-<next>" . centaur-tabs-forward))
+  ("C-<next>" . centaur-tabs-forward)
+  :config
+  (defalias 'yes-or-no-p 'y-or-n-p))
+
+;; ---------------------------------------------------------------------------------------------- ;;
 
 (leaf *common-defun
   :preface
@@ -547,6 +556,8 @@
     :tag "convenience" "emacs>=24.3"
     :url "https://github.com/emacsorphanage/popwin"
     :emacs>= 24.3
+    :ensure t
+    :require t
     :custom
     (display-buffer-function . 'popwin:display-buffer)
     (popwin:special-display-config  . t)

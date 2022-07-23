@@ -2,12 +2,23 @@
 #+AUTHOR: Kyure_A
 #+OPTIONS: toc:nil
 
-* Required package before install
-- git
-- zsh
+** What's this?
+[[https://twitter.com/Kyure_A][@Kyure_A]]'s dotfiles
 
-* Installation
-If zsh is not the default, you can run the command below. (dotfiles are for zsh)
++ Shell: *Zsh* + *zplug* + *Starship*
+
++ Editor: *Emacs* + *leaf.el*
+
+** Required packages
++ Git
+  
++ Zsh
+
++ Emacs
+
+** Installation
+
+If zsh is not the default, you can run the command below. (This Installation commands are for zsh)
 
 #+BEGIN_SRC your-default-shell 
 chsh -s /bin/zsh
@@ -17,14 +28,9 @@ exec $SHELL -l
 To do the installation, all you have to do is copy and paste the 3 lines of command below and run it.
 
 #+BEGIN_SRC zsh
-git clone --depth 1 https://github.com/Kyure-A/dotfiles.git
+git clone https://github.com/Kyure-A/dotfiles.git
 cd dotfiles
-zsh ./installer.sh
+zsh ./installer.zsh
 #+END_SRC
 
 If you want to adapt the settings, restart the shell or run ~exec $SHELL -l~ .
-
-* Why chose GPL-3.0?
-I thought the licence was appropriate, but then I thought about it and remembered that it contains snippets of [[https://github.com/AndreaCrotti/yasnippet-snippets][yasnippet-snippets]]. That is why I chose GPL-3.0 that were chosen [[https://github.com/AndreaCrotti/yasnippet-snippets][yasnippet-snippets]].
-
-This is a 'licence infection' so to speak (but it does not mean I do not want to comply with the GPL, and I do not mean that in a malicious way - I rather appreciate it).
