@@ -8,6 +8,7 @@
 + Shell:
 
   Windows: *Powershell* + *Windows Terminal*
+
   WSL: *Zsh* + *zplug* + *Starship*
 
 + Editor:
