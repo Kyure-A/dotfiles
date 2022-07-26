@@ -18,6 +18,7 @@
 !/.emacs.d/templates/
 !/.emacs.d/templates/**
 !/.gitignore
+!/installer.ps1
 !/installer.zsh
 !/LICENSE.txt
 !/linkmaker.zsh
