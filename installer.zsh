@@ -36,5 +36,5 @@ setup_zplug
 setup_asdf
 setup_winget
 
-source linkmaker.zsh
+source scripts/linkmaker.zsh
 echo -e "\e[32;1mdotfiles have just been Installed!\e[m"
