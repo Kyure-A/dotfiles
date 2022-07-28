@@ -23,4 +23,6 @@
 !/LICENSE.txt
 !/linkmaker.zsh
 !/README.org
+!/scripts/
+!/scripts/**
 !/.zshrc
