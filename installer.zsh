@@ -24,9 +24,17 @@ setup_asdf()
     asdf install deno latest
 }
 
+setup_winget()
+{
+    if [ -n "$(which wslpath)" ]; then
+	pwsh.exe -ExecutionPolicy Unrestricted -File ./scripts/installer.ps1
+    fi
+}
+
 setup_starship
 setup_zplug
 setup_asdf
+setup_winget
 
-source linkmaker.zsh
+source scripts/linkmaker.zsh
 echo -e "\e[32;1mdotfiles have just been Installed!\e[m"

@@ -5,9 +5,15 @@
 ** What's this?
 [[https://twitter.com/Kyure_A][@Kyure_A]]'s dotfiles
 
-+ Shell: *Zsh* + *zplug* + *Starship*
++ Shell:
 
-+ Editor: *Emacs* + *leaf.el*
+  Windows: *Powershell* + *Windows Terminal*
+
+  WSL: *Zsh* + *zplug* + *Starship*
+
++ Editor:
+
+  *Emacs* + *leaf.el*
 
 ** Required packages
 + Git
