@@ -4,6 +4,7 @@
 
 ## accept
 
+!/banner.png
 !/.config/
 !/.config/**
 !/.emacs.d/

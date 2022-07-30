@@ -1,6 +1,8 @@
-#+TITLE: Dotfiles
 #+AUTHOR: Kyure_A
 #+OPTIONS: toc:nil
+
+[[file:./banner.png]]
+
 
 ** What's this?
 [[https://twitter.com/Kyure_A][@Kyure_A]]'s dotfiles
