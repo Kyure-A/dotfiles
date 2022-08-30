@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env zsh -xeu
 
 # nodejs (for copilot.el)
 asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
