@@ -4,6 +4,8 @@
 
 ## accept
 
+!/assets/
+!/assets/**
 !/.config/
 !/.config/**
 !/.emacs.d/

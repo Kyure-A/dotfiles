@@ -1,6 +1,8 @@
-#+TITLE: Dotfiles
 #+AUTHOR: Kyure_A
 #+OPTIONS: toc:nil
+
+[[file:./assets/banner.png]]
+
 
 ** What's this?
 [[https://twitter.com/Kyure_A][@Kyure_A]]'s dotfiles
@@ -36,7 +38,7 @@ To do the installation, all you have to do is copy and paste the 3 lines of comm
 #+BEGIN_SRC zsh
 git clone https://github.com/Kyure-A/dotfiles.git
 cd dotfiles
-zsh ./installer.zsh
+zsh ./scripts/installer.zsh
 #+END_SRC
 
 If you want to adapt the settings, restart the shell or run ~exec $SHELL -l~ .
