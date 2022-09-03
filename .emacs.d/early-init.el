@@ -48,7 +48,6 @@
   (leaf blackout :ensure t)
   (leaf el-get :ensure t :require t :custom (el-get-package-directory . "~/.emacs.packages/el-get") :load-path "~/.emacs.d/el-get")
   (leaf package-utils :ensure t)
-  (leaf straight :config)
   (leaf use-package :ensure t))
 
 

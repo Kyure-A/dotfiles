@@ -261,15 +261,6 @@
      ("s" . tetris-move-down)
      ("d" . tetris-move-right)
      ("RET" . tetris-move-bottom)))
-
-  (leaf *webkit
-    :config
-    (leaf emacs-webkit
-      :config
-      ;(straight-use-package '(webkit :type git :host github :repo "akirakyle/emacs-webkit" :branch "main" :files (:defaults "*.js" "*.css" "*.so") :pre-build ("make"))))
-    (leaf webkit :require t :bind ("s-b" . webkit))
-    (leaf webkit-ace :require t)
-    (leaf webkit-dark :require t)))
   
   (leaf zone :doc "screen-saver" :tag "builtin" :require t :config (zone-when-idle 1200))
   
@@ -287,7 +278,7 @@
     :tag "tools" "maint" "lisp" "indent" "emacs>=24.3"
     :url "https://github.com/Malabarba/aggressive-indent-mode"
     :emacs>= 24.3
-    :ensure t :require t
+    :ensure t
     :require t
     :global-minor-mode global-aggressive-indent-mode)
 
@@ -494,7 +485,18 @@
 	  "Disable `counsel-find-file' and use the original `find-file' with ARGS."
 	  (let ((completing-read-function #'completing-read-default)
 		(completion-in-region-function #'completion--in-region))
-	    (apply #'read-file-name-default args)))))
+	    (apply #'read-file-name-default args))))
+      :config
+      
+      (leaf counsel-projectile
+	:doc "Ivy integration for Projectile"
+	:req "counsel-0.13.4" "projectile-2.5.0"
+	:tag "convenience" "project"
+	:url "https://github.com/ericdanan/counsel-projectile"
+	:added "2022-09-01"
+	:ensure t
+	:after counsel projectile
+	:global-minor-mode counsel-projectile-mode))
     
     (leaf ivy
       :doc "Incremental Vertical completYon"
@@ -794,16 +796,24 @@
     :emacs>= 25.1
     :ensure t :require t
     :custom
-    (vterm-max-scrollback . 5000)
-    (vterm-buffer-name-string . "vterm: %s")
+    (vterm-buffer-name-string . t)
+    (vterm-clear-scrollback-when-clearing . t)
     (vterm-keymap-exceptions
      . '("<f1>" "<f2>" "<f10>" "C-<return>" "C-<prior>" "C-<next>" "C-c" "C-g" "C-l" "C-s" "C-u" "C-v" "C-w" "C-x" "C-y" "M-v" "M-w" "M-x" "M-y"))
+    (vterm-max-scrollback . 5000)
     (vterm-toggle--vterm-buffer-p-function . 'my/term-mode-p)
     :config
     (leaf vterm-toggle :ensure t :require t)
     :preface
     (defun my/term-mode-p(&optional args)
-      (derived-mode-p 'eshell-mode 'term-mode 'shell-mode 'vterm-mode 'multi-term-mode)))
+      (derived-mode-p 'eshell-mode 'term-mode 'shell-mode 'vterm-mode 'multi-term-mode))
+    (push (list "find-file-below"
+		(lambda (path)
+		  (if-let* ((buf (find-file-noselect path))
+                            (window (display-buffer-below-selected buf nil)))
+                      (select-window window)
+                    (message "Failed to open file: %s" path))))
+	  vterm-eval-cmds))
 
   (leaf *C++
     :config
@@ -1199,7 +1209,8 @@
       :tag "convenience" "project" "emacs>=25.1"
       :url "https://github.com/bbatsov/projectile"
       :emacs>= 25.1
-      :ensure t :require t)
+      :ensure t :require t
+      :global-minor-mode t)
     
     (leaf dashboard-goto-recent-files
       :url "https://qiita.com/minoruGH/items/b47430af6537ee69c6ef"
