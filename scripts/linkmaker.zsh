@@ -20,10 +20,9 @@ linkmaker_win()
 	
 	readonly WINPATH="$(wslpath "$(wslvar USERPROFILE)")"
 	
-	# ln -snf "$DOTPATH/$file" "$WINPATH/$file"
-	ln -snf "$DOTPATH/.config/pwsh/profile.ps1" "$WINPATH/Documents/PowerShell/Microsoft.PowerShell_profile.ps1"
-	ln -snf "$DOTPATH/.config/starship/starship.toml" "$WINPATH/Documents/PowerShell/starship.toml"
-	ln -snf "$DOTPATH/.config/winterm/settings.json" "$WINPATH/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json"
+	pwsh.exe New-Item -Value '$DOTPATH/.config/pwsh/profile.ps1' -Path '$WINPATH/Documents/PowerShell/' -Name 'Microsoft.PowerShell_profile.ps1' -ItemType SymbolicLink
+	pwsh.exe New-Item -Value '$DOTPATH/.config/starship/starship.toml' -Path '$WINPATH/Documents/PowerShell/' -Name 'starship.toml' -ItemType SymbolicLink
+	pwsh.exe New-Item -Value '$DOTPATH/.config/winterm/settings.json' -Path '$WINPATH/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/' -Name 'settings.json' -ItemType SymbolicLink
 	
     fi
 }
