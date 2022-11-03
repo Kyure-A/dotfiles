@@ -1,13 +1,10 @@
-## ignore
 /*
 /.**
-
-## accept
-
 !/assets/
 !/assets/**
 !/.config/
 !/.config/**
+/.config/neofetch
 !/.emacs.d/
 !/.emacs.d/banner.png
 !/.emacs.d/early-init.el
