@@ -2,13 +2,6 @@
 
 readonly DOTPATH=~/dotfiles
 
-setup_winget()
-{
-    if [ -n "$(which wslpath)" ]; then
-	pwsh.exe -ExecutionPolicy Unrestricted -File ./scripts/installer.ps1
-    fi
-}
-
 if [ -d "$DOTPATH"] ;then
    echo -e "\e[32;1mUpdating...\e[m"
    git -C "$DOTPATH" pull
