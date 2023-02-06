@@ -836,6 +836,7 @@
     (vterm-toggle--vterm-buffer-p-function . 'my/term-mode-p)
     :config
     (leaf vterm-toggle :ensure t :require t)
+    (add-to-list 'vterm-eval-cmds '("update-pwd" (lambda (path) (setq default-directory path))))
     :preface
     (defun my/term-mode-p(&optional args)
       (derived-mode-p 'eshell-mode 'term-mode 'shell-mode 'vterm-mode 'multi-term-mode))
@@ -992,12 +993,6 @@
       (org-enforce-todo-dependencies . t)
       :config
       
-      (leaf org-beautify-theme
-	:doc "A sub-theme to make org-mode more beautiful."
-	:tag "theme" "org"
-	:ensure t :require t
-	:config (load-theme 'org-beautify t))
-      
       (leaf org-modern
 	:doc "Modern looks for Org"
 	:req "emacs-27.1"
@@ -1006,20 +1001,10 @@
 	:emacs>= 27.1
 	:ensure t :require t
 	:hook
-	;;(org-mode-hook . org-modern-mode)
-	;;(org-agenda-finalize-hook . org-modern-agenda)
+	(org-mode-hook . org-modern-mode)
+	(org-agenda-finalize-hook . org-modern-agenda)
 	)
-
-      (leaf org-superstar
-	:doc "Prettify headings and plain lists in Org mode"
-	:req "org-9.1.9" "emacs-26.1"
-	:tag "outlines" "faces" "emacs>=26.1"
-	:url "https://github.com/integral-dw/org-superstar-mode"
-	:added "2022-09-13"
-	:emacs>= 26.1
-	:ensure t
-	:after org
-	:hook (org-mode-hook . org-superstar-mode)))
+      )
     
     (leaf yatex
       :doc "Yet Another tex-mode for emacs //野鳥//"

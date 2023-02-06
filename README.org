@@ -9,7 +9,7 @@
 
 + Shell:
 
-  Windows: *Powershell* + *Windows Terminal*
+  Windows: *Powershell* + *Windows Terminal* + *Starship*
 
   WSL: *Zsh* + *zplug* + *Starship*
 
