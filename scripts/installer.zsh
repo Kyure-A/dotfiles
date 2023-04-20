@@ -10,10 +10,10 @@ if [ -d "$DOTPATH"] ;then
    
    else
        echo -e "\e[32;1mInstalling...\e[m"
-       setup_starship
-       setup_zplug
-       setup_asdf
-       setup_winget
+       source scripts/setup_starship.zsh
+       source scripts/setup_zplug.zsh
+       source scripts/setup_asdf.zsh
+       source scripts/setup_winget.zsh
        source scripts/linkmaker.zsh
        echo -e "\e[32;1mdotfiles have just been Installed!\e[m"
 fi
