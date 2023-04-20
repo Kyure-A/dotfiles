@@ -19,7 +19,7 @@ winget install Microsoft.VisualStudioCode
 winget install Google.JapaneseIME
 winget install XP89DCGQ3K6VLD #Powertoys
 winget install 9PGCV4V3BK4W #Devtoys
-winget install Schezo.Lhaplus
+# winget install Schezo.Lhaplus
 winget install nanazip
 winget install sysinternals
 
