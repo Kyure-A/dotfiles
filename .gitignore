@@ -19,6 +19,7 @@
 !/.emacs.d/snippets/**
 !/.emacs.d/templates/
 !/.emacs.d/templates/**
+!/.gitconfig
 !/.gitignore
 !/installer.ps1
 !/installer.zsh

@@ -1,0 +1,10 @@
+[user]
+	email = 49436968+Kyure-A@users.noreply.github.com
+	name = Kyure_A
+	
+[url "github:"]
+	InsteadOf = https://github.com/
+	InsteadOf = git@github.com:
+
+[init]
+	defaultBranch = master
