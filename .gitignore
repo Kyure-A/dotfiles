@@ -3,6 +3,8 @@
 !/.asdfrc
 !/assets/
 !/assets/**
+!/bin/
+!/bin/**
 !/.config/
 !/.config/**
 /.config/neofetch
@@ -23,6 +25,4 @@
 !/LICENSE.txt
 !/linkmaker.zsh
 !/README.org
-!/scripts/
-!/scripts/**
 !/.zshrc

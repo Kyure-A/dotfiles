@@ -38,7 +38,7 @@ To do the installation, all you have to do is copy and paste the 3 lines of comm
 #+BEGIN_SRC zsh
 git clone https://github.com/Kyure-A/dotfiles.git
 cd dotfiles
-zsh ./scripts/installer.zsh
+zsh ./bin/installer.zsh
 #+END_SRC
 
 If you want to adapt the settings, restart the shell or run ~exec $SHELL -l~ .
