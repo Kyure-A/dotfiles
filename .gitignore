@@ -25,7 +25,7 @@
 !/.gitignore
 !/installer.ps1
 !/installer.zsh
-!/LICENSE.txt
+!/LICENSE
 !/linkmaker.zsh
 !/README.org
 !/.zshrc
