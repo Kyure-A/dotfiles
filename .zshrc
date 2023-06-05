@@ -13,6 +13,7 @@ alias cp="cp -i" # Confirm before overwriting something
 alias df="df -h" # Human-readable sizes
 alias free="free -m" # Show sizes in MB
 alias ls="ls -a" #隠しファイルの表示
+alias emacs="emacs -nw"
 
 ## Autoload
 autoload -U colors
@@ -52,6 +53,7 @@ setopt correct # 間違いを自動修正する (nyae のやつ)
 setopt extendedglob # 正規表現で*を使うことができる
 setopt histignorealldups # 新しいコマンドが重複している場合は、古いコマンドを削除する
 setopt inc_append_history # 保存したコマンドはすぐに履歴に追加されるが、そうでない場合はシェルが終了したときにのみ追加される
+setopt interactivecomments # コマンドにコメント(# ... )をつけてもエラーが出ないようになる
 setopt nobeep # ビープ音を鳴らさない
 setopt nocaseglob # 大文字小文字を区別しないグロブイング
 setopt nocheckjobs # 終了時に実行中のプロセスに関する警告を出さない
