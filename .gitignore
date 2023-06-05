@@ -5,6 +5,8 @@
 !/assets/**
 !/bin/
 !/bin/**
+!/.cargo/
+!/.cargo/**
 !/.config/
 !/.config/**
 /.config/neofetch
