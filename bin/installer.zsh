@@ -12,15 +12,10 @@ if [ -d "$DOTPATH"] ;then
        echo -e "\e[32;1mInstalling...\e[m"
        source bin/linkmaker.zsh
        wait
-       source bin/setup_starship.zsh
-       wait
-       source bin/setup_zplug.zsh
-       wait
-       source bin/setup_asdf.zsh
+       source bin/setup.zsh
        wait
        if [ -n "$(which wslpath)" ]; then
-	   source bin/linkmaker_win.zsh
-	   source bin/setup_winget.zsh
+	   source bin/windows.zsh
        fi
        
        echo -e "\e[32;1mdotfiles have just been Installed!\e[m"
