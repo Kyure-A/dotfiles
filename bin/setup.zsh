@@ -1,16 +1,9 @@
 #!/usr/bin/env zsh -xeu
 
-# starship
-if [ -n "$(which starship)"]; then
-    curl -sS https://starship.rs/install.sh | sh
-fi
+curl -sS https://starship.rs/install.sh | sh
 
-# zplug
-
-if [ -n "$(which zplug)"]; then
-    curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
-    zplug install
-fi
+curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
+zplug install
 
 # asdf 
 
