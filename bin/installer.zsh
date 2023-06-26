@@ -19,4 +19,6 @@ if [ -d "$DOTPATH"] ;then
        fi
        
        echo -e "\e[32;1mdotfiles have just been Installed!\e[m"
+       
+       exec $SHELL -l
 fi
