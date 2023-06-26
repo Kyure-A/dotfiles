@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh -xeu
 
-readonly DOTPATH=~/dotfiles
+DOTPATH=~/dotfiles
 
 for file in .??* # . から始まるファイル/ディレクトリ
 do
