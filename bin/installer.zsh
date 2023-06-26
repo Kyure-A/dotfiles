@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh -xeu
 
-readonly DOTPATH=~/dotfiles
+DOTPATH=~/dotfiles
 
 if [ -d "$DOTPATH"] ;then
    echo -e "\e[32;1mUpdating...\e[m"
