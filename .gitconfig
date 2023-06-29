@@ -1,6 +1,12 @@
+[core]
+	quotepath = false
+
 [user]
 	email = 49436968+Kyure-A@users.noreply.github.com
 	name = Kyure_A
+
+[github]
+	user = Kyure-A
 	
 [url "github:"]
 	InsteadOf = https://github.com/
