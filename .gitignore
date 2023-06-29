@@ -9,7 +9,6 @@
 !/.cargo/**
 !/.config/
 !/.config/**
-/.config/neofetch
 !/.emacs.d/
 !/.emacs.d/banner.png
 !/.emacs.d/early-init.el
@@ -23,9 +22,7 @@
 !/.emacs.d/templates/**
 !/.gitconfig
 !/.gitignore
-!/installer.ps1
-!/installer.zsh
 !/LICENSE
-!/linkmaker.zsh
 !/README.org
+!/.vimrc
 !/.zshrc
