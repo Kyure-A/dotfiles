@@ -80,28 +80,11 @@ export PATH=$HOME/.keg/bin:$PATH
 #------------------------------------------------------------------------------------------------------------------------------
 
 ## zplug
+
 source ~/.zplug/init.zsh
 if ! zplug check; then
     zplug install
 fi
-
-zplug "b4b4r07/enhancd", use:"init.sh"
-
-zplug "mafredri/zsh-async"
-
-zplug "zsh-users/zsh-autosuggestions"
-
-zplug "zsh-users/zsh-completions"
-
-zplug "zsh-users/zsh-syntax-highlighting"
-
-zplug "zsh-users/zsh-history-substring-search"
-
-zplug "mollifier/anyframe"
-
-zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf
-
-zplug "yuki-yano/zeno.zsh"
 
 zplug "asdf-vm/asdf", as:command, dir:"~/.asdf"
 
@@ -114,6 +97,32 @@ if zplug check asdf-vm/asdf; then
     autoload -Uz compinit && compinit
 fi
 
+zplug "mollifier/anyframe"
+
+zplug "b4b4r07/enhancd", use:"init.sh"
+
+zplug "junegunn/fzf", as:command, from:gh-r, rename-to:fzf
+
+zplug "loretoparisi/kakasi", as:command, dir:"~/kakasi"
+
+zplug "yuki-yano/zeno.zsh"
+
+zplug "mafredri/zsh-async"
+
+zplug "zsh-users/zsh-autosuggestions"
+
+zplug "zsh-users/zsh-completions"
+
+zplug "zsh-users/zsh-history-substring-search"
+
+zplug "aoyama-val/zsh-romaji-complete"
+
+if zplug check aoyama-val/zsh-romaji-complete; then
+    bindkey "^I" menu-expand-or-complete
+fi
+
+zplug "zsh-users/zsh-syntax-highlighting", defer:2
+   
 zplug load
 
 #------------------------------------------------------------------------------------------------------------------------------
