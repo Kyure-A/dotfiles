@@ -14,7 +14,7 @@ if [ -d "$DOTPATH"] ;then
        wait
        source bin/setup.zsh
        wait
-       if [ "$(uname -r)" == *microsoft* ]; then
+       if [ "$(uname -r)" = *microsoft* ]; then
 	   source bin/windows.zsh
        fi
        
