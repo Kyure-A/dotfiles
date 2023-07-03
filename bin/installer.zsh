@@ -14,9 +14,7 @@ if [ -d "$DOTPATH"] ;then
        wait
        source bin/setup.zsh
        wait
-       if [ "$(uname -r)" = *microsoft* ]; then
-	   source bin/windows.zsh
-       fi
+       type "wslpath" >/dev/null 2>&1 && source bin/windows.zsh
        
        echo -e "\e[32;1mdotfiles have just been Installed!\e[m"
        
