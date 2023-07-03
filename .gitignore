@@ -23,6 +23,7 @@
 !/.gitconfig
 !/.gitignore
 !/LICENSE
+!/Makefile
 !/README.org
 !/.vimrc
 !/.zshrc
