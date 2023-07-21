@@ -187,3 +187,5 @@ vterm_cmd() {
 open_file_below() {
     vterm_cmd find-file-below "$(realpath "${@:-.}")"
 }
+
+export GIT_MERGE_AUTOEDIT=no
