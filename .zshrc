@@ -189,3 +189,4 @@ open_file_below() {
 }
 
 export GIT_MERGE_AUTOEDIT=no
+source "$HOME/.rye/env"
