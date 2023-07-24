@@ -2,21 +2,21 @@
 
 DOTPATH=~/dotfiles
 
-if [ -d "$DOTPATH"] ;then
-   echo -e "\e[32;1mUpdating...\e[m"
-   git -C "$DOTPATH" pull
-   source bin/linkmaker.zsh
-   echo -e "\e[32;1mdotfiles have just been Updated!\e[m"
-   
-   else
-       echo -e "\e[32;1mInstalling...\e[m"
-       source bin/linkmaker.zsh
-       wait
-       source bin/setup.zsh
-       wait
-       type "wslpath" >/dev/null 2>&1 && source bin/windows.zsh
-       
-       echo -e "\e[32;1mdotfiles have just been Installed!\e[m"
-       
-       exec $SHELL -l
+if [ -d "$DOTPATH" ]; then
+    echo -e "\e[32;1mUpdating...\e[m"
+    git -C "$DOTPATH" pull
+    source bin/linkmaker.zsh
+    echo -e "\e[32;1mdotfiles have just been Updated!\e[m"
+    
+else
+    echo -e "\e[32;1mInstalling...\e[m"
+    source bin/linkmaker.zsh
+    wait
+    source bin/setup.zsh
+    wait
+    type "wslpath" >/dev/null 2>&1 && source bin/windows.zsh
+    
+    echo -e "\e[32;1mdotfiles have just been Installed!\e[m"
+    
+    exec $SHELL -l
 fi

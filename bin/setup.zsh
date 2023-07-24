@@ -1,9 +1,16 @@
 #!/usr/bin/env zsh -xeu
 
-type "starship" >/dev/null 2>&1 || curl -sS https://starship.rs/install.sh | sh
+if [ ! type "starship" >/dev/null 2>&1 ]; then
+    curl -sS https://starship.rs/install.sh | sh
+fi
 
-type "zplug" >/dev/null 2>&1 || curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
-type "zplug" >/dev/null 2>&1 && zplug install
+if [ ! type "zplug" >/dev/null 2>&1 ]; then
+    curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
+fi
+
+if type "zplug" >/dev/null 2>&1; then
+    zplug install
+fi
 
 # asdf 
 
