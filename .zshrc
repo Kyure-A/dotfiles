@@ -7,6 +7,7 @@ SAVEHIST=100000
 
 export EDITOR=emacs
 export SUDO_EDITOR=emacs
+export GIT_MERGE_AUTOEDIT=no
 
 #------------------------------------------------------------------------------------------------------------------------------
 
@@ -15,7 +16,7 @@ alias cp="cp -i" # Confirm before overwriting something
 alias df="df -h" # Human-readable sizes
 alias free="free -m" # Show sizes in MB
 alias ls="ls -a" #隠しファイルの表示
-alias emacs="emacs -nw"
+# alias emacs="emacs -nw"
 
 ## Autoload
 autoload -U colors
@@ -80,7 +81,7 @@ WORDCHARS=${WORDCHARS//\/[&.;]} # 単語区切り文字の設定
 #------------------------------------------------------------------------------------------------------------------------------
 ## PATH
 export PATH=$HOME/.keg/bin:$PATH
-
+source "$HOME/.rye/env"
 #------------------------------------------------------------------------------------------------------------------------------
 
 ## zplug
