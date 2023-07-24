@@ -1,4 +1,6 @@
-#
+
+# zmodload zsh/zprof
+
 HISTFILE=~/.zhistory
 HISTSIZE=100000
 SAVEHIST=100000
@@ -22,6 +24,8 @@ autoload -U predict-on
 predict-on
 autoload -U zcalc
 autoload -U add-zsh-hook
+autoload -U compinit
+compinit -C
 
 ## Keys
 setxkbmap -layout us
@@ -93,8 +97,6 @@ if zplug check asdf-vm/asdf; then
     . $HOME/.asdf/asdf.sh
     # append completions to fpath
     fpath=(~/.asdf/completions $fpath)
-    # initialise completions with ZSH's compinit
-    autoload -Uz compinit && compinit
 fi
 
 zplug "mollifier/anyframe"
@@ -187,3 +189,5 @@ vterm_cmd() {
 open_file_below() {
     vterm_cmd find-file-below "$(realpath "${@:-.}")"
 }
+
+# zprof
