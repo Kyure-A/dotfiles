@@ -1,7 +1,7 @@
-![banner](file:./assets/banner.png)
+![banner](./assets/banner.png)
 
 ## What's this?
-![Kyure_A](https://twitter.com/Kyure_A)'s dotfiles
+[Kyure_A](https://twitter.com/Kyure_A)'s dotfiles
 
 - Shell:
 
