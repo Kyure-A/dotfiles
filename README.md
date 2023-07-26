@@ -1,7 +1,7 @@
 ![banner](./assets/banner.png)
 
 ## What's this?
-- Windows: <img alt="Kyure_A icon" width="18px" src="https://github.com/Kyure-A/avatar/blob/master/kyure_a.jpg?raw=true"> [@Kyure_A](https://twitter.com/Kyure_A)'s dotfiles
+<img alt="Kyure_A icon" width="18px" src="https://github.com/Kyure-A/avatar/blob/master/kyure_a.jpg?raw=true"> [@Kyure_A](https://twitter.com/Kyure_A)'s dotfiles
 
 - Shell:
 
