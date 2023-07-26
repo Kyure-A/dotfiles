@@ -24,6 +24,6 @@
 !/.gitignore
 !/LICENSE
 !/Makefile
-!/README.org
+!/README.md
 !/.vimrc
 !/.zshrc

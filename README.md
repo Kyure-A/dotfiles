@@ -1,42 +1,38 @@
-#+AUTHOR: Kyure_A
-#+OPTIONS: toc:nil
+![banner](file:./assets/banner.png)
 
-[[file:./assets/banner.png]]
+## What's this?
+![Kyure_A](https://twitter.com/Kyure_A)'s dotfiles
 
+- Shell:
 
-** What's this?
-[[https://twitter.com/Kyure_A][@Kyure_A]]'s dotfiles
+	- Windows: **Powershell** + **Windows Terminal** + **Starship**
 
-+ Shell:
+	- Linux: **zsh** + **zplug** + **Starship**
 
-  Windows: *Powershell* + *Windows Terminal* + *Starship*
+- Editor:
 
-  Linux: *zsh* + *zplug* + *Starship*
+  **Emacs** + **leaf.el**
 
-+ Editor:
-
-  *Emacs* + *leaf.el*
-
-** Requirement
-+ Git
+## Requirement
+- Git
   
-+ zsh
+- zsh
 
-+ Emacs
+- Emacs
 
-** Installation
+## Installation
 
 If zsh is not the default, you can run the command below. (This Installation commands are for zsh)
 
-#+BEGIN_SRC your-default-shell 
+```
 chsh -s /bin/zsh
 exec $SHELL -l
-#+END_SRC
+```
 
 To do the installation, all you have to do is copy and paste the only 1 lines of command below and run it.
 
-#+BEGIN_SRC zsh
+```
 curl -sL https://kyure-a.github.io/dotfiles/bin/installer.zsh | zsh
-#+END_SRC
+```
 
 If you want to adapt the settings, restart the shell or run ~exec $SHELL -l~ .
