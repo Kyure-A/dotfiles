@@ -1,7 +1,7 @@
 ![banner](./assets/banner.png)
 
 ## What's this?
-<img alt="Kyure_A icon" width="18px" src="https://github.com/Kyure-A/avatar/blob/master/kyure_a.jpg?raw=true"> [@Kyure_A](https://twitter.com/Kyure_A)'s dotfiles
+<img alt="Kyure_A icon" width="18px" src="https://github.com/Kyure-A/avatar/blob/master/kyure_a.jpg?raw=true"> [@Kyure_A](https://twitter.com/Kyure_A)'s dotfiles (for WSL)
 
 - Shell:
 	- <img alt="Windows Icon" width="18px" src="https://raw.githubusercontent.com/github/explore/379d49236d826364be968345e0a085d044108cff/topics/windows/windows.png" /> Windows: <img alt="pwsh icon" width="18px" src="https://learn.microsoft.com/ja-jp/powershell/media/index/ps_black_128.svg"> **pwsh** + <img alt="pwsh icon" width="18px" src="https://upload.wikimedia.org/wikipedia/commons/5/51/Windows_Terminal_logo.svg"> **Windows Terminal** + <img alt="Starship icon" width="18px" src="https://raw.githubusercontent.com/starship/starship/master/media/icon.png"> **Starship**
