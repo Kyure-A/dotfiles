@@ -22,6 +22,9 @@ existp "eask" || npm install -g @emacs-eask/cli
 # rustup
 existp "rustup" || curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
+# rye
+existp "rye" || curl -sSf https://rye-up.com/get | bash
+
 # starship
 existp "starship" || curl -sS https://starship.rs/install.sh | sh
 
