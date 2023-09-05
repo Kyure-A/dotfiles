@@ -10,7 +10,6 @@
 !/.config/
 !/.config/**
 !/.emacs.d/
-!/.emacs.d/banner.png
 !/.emacs.d/early-init.el
 !/.emacs.d/elisp/
 !/.emacs.d/elisp/**
@@ -18,6 +17,7 @@
 !/.emacs.d/README.org
 !/.emacs.d/snippets/
 !/.emacs.d/snippets/**
+!/.emacs.d/static/**
 !/.emacs.d/templates/
 !/.emacs.d/templates/**
 !/.gitconfig
