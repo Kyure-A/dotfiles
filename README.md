@@ -28,13 +28,13 @@
 
 To do the installation, all you have to do is copy and paste the only 1 lines of command below and run it.
 
-```
+```zsh
 curl -sL https://kyure-a.github.io/dotfiles/bin/installer.zsh | zsh
 ```
 
 If zsh is not the default, you can run the command below. (This Installation commands are for zsh)
 
-```
+```zsh
 chsh -s /bin/zsh
 exec $SHELL -l
 ```
