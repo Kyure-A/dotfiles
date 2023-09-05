@@ -2,7 +2,7 @@
 
 <div align="center">
 	<h2>
-		<img alt="Kyure_A icon" width="18px" src="https://github.com/Kyure-A/avatar/blob/master/kyure_a.jpg?raw=true"> [@Kyure_A](https://twitter.com/Kyure_A)'s dotfiles (for WSL)
+		<img alt="Kyure_A icon" width="18px" src="https://github.com/Kyure-A/avatar/blob/master/kyure_a.jpg?raw=true"><a href="https://twitter.com/kyureq">@Kyure_A</a>'s Emacs (for Windows Subsystem for Linux)
 	</h2>
 </div>
 
