@@ -17,6 +17,7 @@
 !/.emacs.d/README.org
 !/.emacs.d/snippets/
 !/.emacs.d/snippets/**
+!/.emacs.d/static/
 !/.emacs.d/static/**
 !/.emacs.d/templates/
 !/.emacs.d/templates/**
