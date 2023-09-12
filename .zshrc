@@ -84,20 +84,16 @@ export PATH=$HOME/.keg/bin:$PATH
 source "$HOME/.rye/env"
 #------------------------------------------------------------------------------------------------------------------------------
 
+## rtx
+eval "$(~/.local/share/rtx/bin/rtx activate zsh)"
+export RTX_DATA_DIR=$HOME/.rtx
+export RTX_CACHE_DIR=$RTX_DATA_DIR/cache
+
 ## zplug
 
 source ~/.zplug/init.zsh
 if ! zplug check; then
     zplug install
-fi
-
-zplug "asdf-vm/asdf", as:command, dir:"~/.asdf"
-
-if zplug check asdf-vm/asdf; then
-    ## asdf
-    . $HOME/.asdf/asdf.sh
-    # append completions to fpath
-    fpath=(~/.asdf/completions $fpath)
 fi
 
 zplug "mollifier/anyframe"
@@ -125,7 +121,7 @@ if zplug check aoyama-val/zsh-romaji-complete; then
 fi
 
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
-   
+
 zplug load
 
 #------------------------------------------------------------------------------------------------------------------------------

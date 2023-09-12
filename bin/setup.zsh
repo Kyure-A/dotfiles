@@ -2,22 +2,11 @@
 
 existp() { type "$1" > /dev/null 2>&1; }
 
-# asdf
-existp "asdf" || git clone https://github.com/asdf-vm/asdf.git ~/.asdf
-
-existp "asdf" &&
-    {
-	## nodejs
-	asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git;
-	asdf install nodejs latest;
-	
-	## deno
-	asdf plugin add deno
-	asdf install deno latest
-    }
-
 # eask
 existp "eask" || npm install -g @emacs-eask/cli
+
+# rtx
+existp "rtx" || curl https://rtx.pub/install.sh | sh
 
 # rustup
 existp "rustup" || curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh

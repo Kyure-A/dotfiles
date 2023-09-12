@@ -1,0 +1,27 @@
+[tools]
+
+[settings]
+legacy_version_file = true
+
+always_keep_download = false
+
+always_keep_install = false
+
+#  (https://github.com/jdxcode/rtx/issues/128)
+plugin_autoupdate_last_check_duration = '1 week'
+
+verbose = true     
+
+asdf_compat = false
+
+jobs = 4
+
+raw = false
+
+shorthands_file = '~/.config/rtx/shorthands.toml'
+
+disable_default_shorthands = false
+
+experimental = false
+
+log_level = 'debug'
