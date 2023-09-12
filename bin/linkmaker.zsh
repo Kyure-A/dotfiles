@@ -8,6 +8,7 @@ do
     [ "$file" = ".config" ] && continue
     [ "$file" = ".git" ] && continue
     [ "$file" = ".gitignore" ] && continue
+    [ "$file" = ".swp" ] && continue
     [ "$file" = ".tool-versions" ] && continue
 	
     ln -snf "$DOTPATH/$file" "$HOME"/"$file"
