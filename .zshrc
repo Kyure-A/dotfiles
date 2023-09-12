@@ -1,6 +1,8 @@
 
 # zmodload zsh/zprof
 
+eval "$(sheldon source)"
+
 HISTFILE=~/.zhistory
 HISTSIZE=100000
 SAVEHIST=100000
@@ -17,16 +19,6 @@ alias df="df -h" # Human-readable sizes
 alias free="free -m" # Show sizes in MB
 alias ls="ls -a" #隠しファイルの表示
 # alias emacs="emacs -nw"
-
-## Autoload
-autoload -U colors
-colors
-autoload -U predict-on
-predict-on
-autoload -U zcalc
-autoload -U add-zsh-hook
-autoload -U compinit
-compinit -C
 
 ## Keys
 setxkbmap -layout us
@@ -66,9 +58,6 @@ setopt numericglobsort # ファイル名を数字順にソートする
 setopt print_eight_bit # 日本語ファイル名を表示可能にする
 setopt rcexpandparam # パラメータによる配列の拡張
 
-## zmodload
-zmodload zsh/terminfo #履歴の部分文字列検索に<UP> <DOWN> キーを割り当てる
-
 ## zstyle
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' # 大文字小文字を区別しないタブ補完
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}" # 色付き補完(dirs/files/etcで色が異なる)
@@ -85,49 +74,12 @@ source "$HOME/.rye/env"
 #------------------------------------------------------------------------------------------------------------------------------
 
 ## rtx
-eval "$(~/.local/share/rtx/bin/rtx activate zsh)"
 export RTX_DATA_DIR=$HOME/.rtx
 export RTX_CACHE_DIR=$RTX_DATA_DIR/cache
-
-## zplug
-
-source ~/.zplug/init.zsh
-if ! zplug check; then
-    zplug install
-fi
-
-zplug "mollifier/anyframe"
-
-zplug "b4b4r07/enhancd", use:"init.sh"
-
-zplug "junegunn/fzf", as:command, from:gh-r, rename-to:fzf
-
-zplug "loretoparisi/kakasi", as:command, dir:"~/kakasi"
-
-zplug "yuki-yano/zeno.zsh"
-
-zplug "mafredri/zsh-async"
-
-zplug "zsh-users/zsh-autosuggestions"
-
-zplug "zsh-users/zsh-completions"
-
-zplug "zsh-users/zsh-history-substring-search"
-
-zplug "aoyama-val/zsh-romaji-complete"
-
-if zplug check aoyama-val/zsh-romaji-complete; then
-    bindkey "^I" menu-expand-or-complete
-fi
-
-zplug "zsh-users/zsh-syntax-highlighting", defer:2
-
-zplug load
 
 #------------------------------------------------------------------------------------------------------------------------------
 
 ## starship
-eval "$(starship init zsh)"
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
 
 #------------------------------------------------------------------------------------------------------------------------------
@@ -154,24 +106,20 @@ if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
 fi
 
 ### vterm-buffer-name-string
-add-zsh-hook -Uz chpwd (){ print -Pn "\e]2;%m:%2~\a" }
+add-zsh-hook -Uz chpwd () { print -Pn "\e]2;%m:%2~\a" }
 
 ### Directory tracking and Prompt tracking
-vterm_prompt_end() {
-    vterm_printf "51;A$(whoami)@$(hostname):$(pwd)";
-}
-
-vterm_set_directory() {
-    vterm_cmd update-pwd "/-:""$USER""@""$HOSTNAME"":""$PWD/"
-}
-
+vterm_prompt_end() { vterm_printf "51;A$(whoami)@$(hostname):$(pwd)";}
 setopt PROMPT_SUBST
 PROMPT=$PROMPT'%{$(vterm_prompt_end)%}'
-add-zsh-hook -Uz chpwd (){ vterm_set_directory }
+
+vterm_set_directory() { vterm_cmd update-pwd "/-:""$USER""@""$HOSTNAME"":""$PWD/" }
+add-zsh-hook -Uz chpwd () { vterm_set_directory }
 
 ### Message passing
 
-vterm_cmd() {
+vterm_cmd()
+{
     local vterm_elisp
     vterm_elisp=""
     while [ $# -gt 0 ]; do
@@ -183,8 +131,6 @@ vterm_cmd() {
 
 ### files opened below the current window.
 
-open_file_below() {
-    vterm_cmd find-file-below "$(realpath "${@:-.}")"
-}
+open_file_below() { vterm_cmd find-file-below "$(realpath "${@:-.}")" }
 
 # zprof

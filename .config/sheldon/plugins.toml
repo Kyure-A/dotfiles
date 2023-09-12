@@ -1,0 +1,64 @@
+shell = "zsh"
+
+[plugins]
+	
+[plugins.zsh-defer]
+github = "romkatv/zsh-defer"
+apply = ["source"]
+
+[templates]
+defer = "{{ hooks | get: \"pre\" | nl }}{% for file in files %}zsh-defer source \"{{ file }}\"\n{% endfor %}{{ hooks | get: \"post\" | nl }}"
+
+[plugins.add-zsh-hook]
+inline = "autoload -U add-zsh-hook"
+
+[plugins.anyframe]
+github = "mollifier/anyframe"
+
+[plugins.colors]
+inline = "autoload -U colors && zsh-defer colors"
+
+[plugins.compinit]
+inline = "autoload -U compinit && zsh-defer compinit -C"
+
+[plugins.enhancd]
+github = "b4b4r07/enhancd"
+apply = ["defer"]
+
+[plugins.fzf]
+github = "junegunn/fzf"
+
+[plugins.predict]
+inline = "autoload -U predict-on && predict-on"
+
+[plugins.rtx]
+inline = 'eval "$(rtx activate zsh)"'
+
+[plugins.starship]
+inline = 'eval "$(starship init zsh)"'
+
+[plugins.zcalc]
+inline = "autoload -U zcalc"
+
+[plugins.zeno]
+github = "yuki-yano/zeno.zsh"
+apply = ["defer"]
+
+[plugins.zsh-async]
+github = "mafredri/zsh-async"
+
+[plugins.zsh-completions]
+github = "zsh-users/zsh-completions"
+apply = ["defer"]
+
+[plugins.zsh-history-substring-search]
+github = "zsh-users/zsh-history-substring-search"
+apply = ["defer"]
+
+[plugins.zsh-syntax-highlighting]
+github = "zsh-users/zsh-syntax-highlighting"
+apply = ["defer"]
+
+[plugins.zsh-terminfo]
+#履歴の部分文字列検索に<UP> <DOWN> キーを割り当てる
+inline = "zmodload zsh/terminfo"
