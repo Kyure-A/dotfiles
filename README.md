@@ -7,9 +7,11 @@
 </div>
 
 - Shell:
-	- <img alt="Windows Icon" width="18px" src="https://raw.githubusercontent.com/github/explore/379d49236d826364be968345e0a085d044108cff/topics/windows/windows.png" /> Windows: <img alt="pwsh icon" width="18px" src="https://learn.microsoft.com/ja-jp/powershell/media/index/ps_black_128.svg"> **pwsh** + <img alt="pwsh icon" width="18px" src="https://upload.wikimedia.org/wikipedia/commons/5/51/Windows_Terminal_logo.svg"> **Windows Terminal** + <img alt="Starship icon" width="18px" src="https://raw.githubusercontent.com/starship/starship/master/media/icon.png"> **Starship**
+	- <img alt="Windows Icon" width="18px" src="https://raw.githubusercontent.com/github/explore/379d49236d826364be968345e0a085d044108cff/topics/windows/windows.png" /> Windows: 
+	<img alt="pwsh icon" width="18px" src="https://learn.microsoft.com/ja-jp/powershell/media/index/ps_black_128.svg"> **pwsh** + <img alt="pwsh icon" width="18px" src="https://upload.wikimedia.org/wikipedia/commons/5/51/Windows_Terminal_logo.svg"> **Windows Terminal** + <img alt="Starship icon" width="18px" src="https://raw.githubusercontent.com/starship/starship/master/media/icon.png"> **Starship**
 	
-	- <img alt="Linux Icon" width="18px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/linux/linux.png" /> Linux: <img alt="zsh icon" width="18px" src="https://www.zsh.org/favicon.ico"> **zsh** + <img alt="Emacs Icon" width="18px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/emacs/emacs.png" /> **vterm** + 🐚 **Sheldon** + <img alt="Starship icon" width="18px" src="https://raw.githubusercontent.com/starship/starship/master/media/icon.png"> **Starship**
+	- <img alt="Linux Icon" width="18px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/linux/linux.png" /> Linux: 
+	<img alt="zsh icon" width="18px" src="https://www.zsh.org/favicon.ico"> **zsh** + <img alt="Emacs Icon" width="18px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/emacs/emacs.png" /> **vterm** + 🐚 **Sheldon** + <img alt="Starship icon" width="18px" src="https://raw.githubusercontent.com/starship/starship/master/media/icon.png"> **Starship**
 
 - Editor:
 
@@ -18,9 +20,12 @@
 ![Emacs Screen Shot](./assets/emacs_screenshot.png)
 
 - Runtime manager: 
-  - Rust: rustup
-  - Python: <img alt="rtx" width="18px" src="https://github.com/mitsuhiko/rye/raw/main/docs/static/favicon.svg" /> Rye
-  - Other: <img alt="rtx" width="18px" src="https://github.com/jdx/rtx/raw/main/docs/logo-dark@2x.png" /> rtx (alt asdf)
+  - Rust: 
+  <img alt="rustup" width="18px" src="https://www.rust-lang.org/logos/rust-logo-64x64.png" /> rustup
+  - Python: 
+  <img alt="rye" width="18px" src="https://github.com/mitsuhiko/rye/raw/main/docs/static/favicon.svg" /> Rye
+  - Other: 
+  <img alt="rtx" width="18px" src="https://github.com/jdx/rtx/raw/main/docs/logo-dark@2x.png" /> rtx (alt asdf)
 
 ## Requirement
 - <img alt="Git icon" width="18px" src="https://git-scm.com/favicon.ico"> Git
