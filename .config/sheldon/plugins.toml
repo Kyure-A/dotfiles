@@ -21,6 +21,16 @@ inline = "autoload -U colors && zsh-defer colors"
 [plugins.compinit]
 inline = "autoload -U compinit && zsh-defer compinit -C"
 
+[plugins.dotfiles-async]
+local = "~/dotfiles/.config/zsh/async"
+use = ["*.zsh"]
+apply = ["defer"]
+
+[plugins.dotfiles-sync]
+local = "~/dotfiles/.config/zsh/sync"
+use = ["*.zsh"]
+apply = ["source"]
+
 [plugins.enhancd]
 github = "b4b4r07/enhancd"
 apply = ["defer"]
