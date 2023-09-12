@@ -14,6 +14,9 @@ existp "rustup" || curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | s
 # rye
 existp "rye" || curl -sSf https://rye-up.com/get | bash
 
+# sheldon
+existp "sheldon" || cargo install sheldon
+
 # starship
 existp "starship" || curl -sS https://starship.rs/install.sh | sh
 
