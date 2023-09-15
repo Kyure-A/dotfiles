@@ -35,6 +35,10 @@ apply = ["source"]
 github = "b4b4r07/enhancd"
 apply = ["defer"]
 
+[plugins.kill-ring]
+github = "Kyure-A/universal-kill-ring.zsh"
+apply = ["defer"]
+
 [plugins.fzf]
 github = "junegunn/fzf"
 
