@@ -1,5 +1,5 @@
 [core]
-	quotepath = false
+	quotepath = false # 日本語を正常に表示する
 
 [user]
 	email = 49436968+Kyure-A@users.noreply.github.com
@@ -8,9 +8,10 @@
 [github]
 	user = Kyure-A
 	
-[url "github:"]
-	InsteadOf = https://github.com/
-	InsteadOf = git@github.com:
+# cargo で error でる
+# [url "github:"]
+# 	InsteadOf = https://github.com/
+# 	InsteadOf = git@github.com:
 
 [init]
 	defaultBranch = master
