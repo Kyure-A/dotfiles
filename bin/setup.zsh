@@ -2,25 +2,23 @@
 
 existp() { type "$1" > /dev/null 2>&1; }
 
-# eask
-existp "eask" || npm install -g @emacs-eask/cli
-
-# rtx
-existp "rtx" || curl https://rtx.pub/install.sh | sh
+# rye
+existp "rye" || curl -sSf https://rye-up.com/get | bash
 
 # rustup
 existp "rustup" || curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
-# rye
-existp "rye" || curl -sSf https://rye-up.com/get | bash
+## sheldon
+existp "sheldon" || cargo install sheldon --locked
 
-# sheldon
-existp "sheldon" || cargo install sheldon
+## starship
+existp "starship" || cargo install starship --locked
 
-# starship
-existp "starship" || curl -sS https://starship.rs/install.sh | sh
+## rtx
+existp "rtx" || cargo install rtx-cli --locked
 
-# zplug
-existp "zplug" || curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
+### node
+existp "node" || { rtx install node@latest; rtx use -g node@latest; }
 
-existp "zplug" && zplug install
+#### eask
+existp "eask" || npm install -g @emacs-eask/cli
