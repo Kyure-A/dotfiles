@@ -1,24 +1,26 @@
 #!/usr/bin/env zsh -xeu
 
 existp() { type "$1" > /dev/null 2>&1; }
+update_message() { printf "\033[32mUpdating \033[m\"$1\"\n\n" }
+install_message() { printf "\033[32mInstalling \033[m\"$1\"\n\n" }
 
 # rye
-existp "rye" || curl -sSf https://rye-up.com/get | bash
+existp "rye" && { update_message "rye"; rye self update; } || { install_message "rye"; curl -sSf https://rye-up.com/get | bash;}
 
 # rustup
-existp "rustup" || curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+existp "rustup" && { update_message "rustup"; rustup update; } || { install_message "rustup"; curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh; }
 
 ## sheldon
-existp "sheldon" || cargo install sheldon --locked
+existp "sheldon" && { update_message "sheldon"; cargo update -p sheldon; } || { install_message "sheldon"; cargo install sheldon --locked; }
 
 ## starship
-existp "starship" || cargo install starship --locked
+existp "starship" && { update_message "starship"; cargo update -p starship; } || { install_message "starship"; cargo install starship --locked; }
 
 ## rtx
-existp "rtx" || cargo install rtx-cli --locked
+existp "rtx" && { update_message "rtx"; cargo update -p rtx-cli;} || { install_message "rtx"; cargo install rtx-cli --locked; }
 
 ### node
-existp "node" || { rtx install node@latest; rtx use -g node@latest; }
+existp "node" || { install_message "node"; rtx install node@latest; rtx use -g node@latest; }
 
 #### eask
-existp "eask" || npm install -g @emacs-eask/cli
+existp "eask" || { install_message "eask"; npm install -g @emacs-eask/cli; }
