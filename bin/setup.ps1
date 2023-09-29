@@ -10,3 +10,5 @@ winget install XP89DCGQ3K6VLD #Powertoys
 winget install 9PGCV4V3BK4W #Devtoys
 winget install sysinternals
 winget install nanazip
+winget install rustup
+cargo install eza
