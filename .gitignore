@@ -23,7 +23,7 @@
 !/.emacs.d/templates/**
 !/.gitconfig
 !/.gitignore
-!/LICENSE
+!/LICENSE.md
 !/Makefile
 !/README.md
 !/.zshrc
