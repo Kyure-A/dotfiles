@@ -29,6 +29,7 @@ do
     ln -snf "$DOTPATH/$file" "$HOME"/"$file" && printf "\033[32mLinked\033[m            $DOTPATH/$file -> $HOME/$file\n" || printf "\033[31mFailed\033[m            $DOTPATH/$file -> $HOME/$file\n"
 done
 
+# Windows 側
 existp "wslpath" &&
     {
 	WINPATH="$(wslpath '$(wslvar USERPROFILE)')"

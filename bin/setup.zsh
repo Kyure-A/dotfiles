@@ -1,8 +1,6 @@
 #!/usr/bin/env zsh -xeu
 
-existp() { type "$1" > /dev/null 2>&1; }
-update_message() { printf "\033[32mUpdating \033[m\"$1\"\n\n" }
-install_message() { printf "\033[32mInstalling \033[m\"$1\"\n\n" }
+source $DOTPATH/bin/function.zsh
 
 # rye
 existp "rye" && { update_message "rye"; rye self update; } || { install_message "rye"; curl -sSf https://rye-up.com/get | bash;}
