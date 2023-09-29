@@ -19,6 +19,9 @@ existp "starship" && { update_message "starship"; cargo update -p starship; } ||
 ## rtx
 existp "rtx" && { update_message "rtx"; cargo update -p rtx-cli;} || { install_message "rtx"; cargo install rtx-cli --locked; }
 
+## eza
+existp "eza" && { update_message "eza"; cargo update -p eza;} || { install_message "eza"; cargo install eza --locked; }
+
 ### node
 existp "node" || { install_message "node"; rtx install node@latest; rtx use -g node@latest; }
 
