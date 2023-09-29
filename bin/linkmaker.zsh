@@ -2,7 +2,10 @@
 
 DOTPATH=~/dotfiles
 
-for file in .??* # . から始まるファイル/ディレクトリ
+source $DOTPATH/bin/function.zsh
+
+# . から始まるファイル/ディレクトリ
+for file in .??*
 do
     [ "$file" = ".cargo" ] && continue
     [ "$file" = ".config" ] && continue
@@ -11,20 +14,35 @@ do
     [ "$file" = ".swp" ] && continue
     [ "$file" = ".tool-versions" ] && continue
 	
-    ln -snf "$DOTPATH/$file" "$HOME"/"$file"
-    echo -e " \u2714  \e[32mLinked!\e[m            $DOTPATH/$file -> $HOME/$file"
+    ln -snf "$DOTPATH/$file" "$HOME"/"$file" && printf "\033[32mLinked\033[m            $DOTPATH/$file -> $HOME/$file\n" || printf "\033[31mFailed\033[m            $DOTPATH/$file -> $HOME/$file\n"
 done
 
-for file in .config/* # .config 直下のファイル/ディレクトリ
+# .config 直下のファイル/ディレクトリ
+for file in .config/*
 do
-    ln -snf "$DOTPATH/$file" "$HOME"/"$file"
-    echo -e " \u2714  \e[32mLinked!\e[m            $DOTPATH/$file -> $HOME/$file"
+    ln -snf "$DOTPATH/$file" "$HOME"/"$file" && printf "\033[32mLinked\033[m            $DOTPATH/$file -> $HOME/$file\n" || printf "\033[31mFailed\033[m            $DOTPATH/$file -> $HOME/$file\n"
 done
 
-for file in .cargo/* # .cargo 直下のファイル/ディレクトリ
+# .cargo 直下のファイル/ディレクトリ
+for file in .cargo/*
 do
-    ln -snf "$DOTPATH/$file" "$HOME"/"$file"
-    echo -e " \u2714  \e[32mLinked!\e[m            $DOTPATH/$file -> $HOME/$file"
+    ln -snf "$DOTPATH/$file" "$HOME"/"$file" && printf "\033[32mLinked\033[m            $DOTPATH/$file -> $HOME/$file\n" || printf "\033[31mFailed\033[m            $DOTPATH/$file -> $HOME/$file\n"
 done
 
-echo -e "\e[32;1mSymbolic Links have just been created!\e[m"
+existp "wslpath" &&
+    {
+	WINPATH="$(wslpath '$(wslvar USERPROFILE)')"
+	printf "$WINPATH"
+	
+	pwsh.exe -Command New-Item -Value '$DOTPATH/.config/pwsh/profile.ps1' -Path '$WINPATH/Documents/PowerShell/' -Name 'Microsoft.PowerShell_profile.ps1' -ItemType SymbolicLink
+	printf "\033[32mLinked\033[m            $DOTPATH/.config/pwsh/profile.ps1 -> $WINPATH/Documents/PowerShell/"
+	
+	pwsh.exe -Command New-Item -Value '$DOTPATH/.config/starship/starship.toml' -Path '$WINPATH/Documents/PowerShell/' -Name 'starship.toml' -ItemType SymbolicLink
+	
+	
+	pwsh.exe -Command New-Item -Value '$DOTPATH/.config/winterm/settings.json' -Path '$WINPATH/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/' -Name 'settings.json' -ItemType SymbolicLink
+	
+	## pwsh.exe -ExecutionPolicy Unrestricted -File ./winget.ps1
+    }
+
+printf "\033[32mSymbolic Links have just been created.\033[m\n"
