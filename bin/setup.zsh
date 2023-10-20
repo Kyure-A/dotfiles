@@ -11,6 +11,9 @@ existp "rustup" && { update_message "rustup"; rustup update; } || { install_mess
 ## sheldon
 existp "sheldon" && { update_message "sheldon"; cargo update -p sheldon; } || { install_message "sheldon"; cargo install sheldon --locked; }
 
+## delta
+existp "git-delta" && { update_message "git-delta"; cargo update -p git-delta; } || { install_message "git-delta"; cargo install git-delta --locked; }
+
 ## starship
 existp "starship" && { update_message "starship"; cargo update -p starship; } || { install_message "starship"; cargo install starship --locked; }
 

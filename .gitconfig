@@ -1,5 +1,6 @@
 [core]
 	quotepath = false # 日本語を正常に表示する
+	pager = delta
 
 [user]
 	email = 49436968+Kyure-A@users.noreply.github.com
@@ -8,10 +9,18 @@
 [github]
 	user = Kyure-A
 	
-# cargo で error でる
-# [url "github:"]
-# 	InsteadOf = https://github.com/
-# 	InsteadOf = git@github.com:
-
 [init]
 	defaultBranch = master
+
+[interactive]
+	diffFilter = delta --color-only
+
+[delta]
+	navigate = true    # use n and N to move between diff sections
+	light = false      # set to true if you're in a terminal w/ a light background color (e.g. the default macOS terminal)
+
+[merge]
+	conflictstyle = diff3
+
+[diff]
+	colorMoved = default
