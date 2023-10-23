@@ -11,13 +11,13 @@ existp "rye" && { update_message "rye"; rye self update; } || { install_message 
 existp "rustup" && { update_message "rustup"; rustup update; } || { install_message "rustup"; curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh; }
 
 ## sheldon
-existp "sheldon" && { update_message "sheldon"; cargo update -p sheldon; } || { install_message "sheldon"; cargo install sheldon --locked; }
+existp "sheldon" && { update_message "sheldon"; cargo update -p sheldon; } || { install_message "sheldon"; curl --proto '=https' -fLsS https://rossmacarthur.github.io/install/crate.sh | bash -s -- --repo rossmacarthur/sheldon --to ~/.local/bin; }
 
 ## delta
 existp "git-delta" && { update_message "git-delta"; cargo update -p git-delta; } || { install_message "git-delta"; cargo install git-delta --locked; }
 
 ## starship
-existp "starship" && { update_message "starship"; cargo update -p starship; } || { install_message "starship"; cargo install starship --locked; }
+existp "starship" && { update_message "starship"; cargo update -p starship; } || { install_message "starship"; curl -sS https://starship.rs/install.sh | sh; }
 
 ## rtx
 existp "rtx" && { update_message "rtx"; cargo update -p rtx-cli;} || { install_message "rtx"; cargo install rtx-cli --locked; }
