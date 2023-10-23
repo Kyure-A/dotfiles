@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh -xeu
 
+DOTPATH=~/dotfiles
+
 source $DOTPATH/bin/function.zsh
 
 # rye
