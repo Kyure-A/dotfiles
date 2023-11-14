@@ -1,0 +1,77 @@
+* Header
+#+begin_src emacs-lisp
+;;; early-init.el ---  -*- lexical-binding: t -*-
+
+;; Author: Kyure_A <twitter.com/@kyureq>
+;; Maintainer: Kyure_A <twitter.com/@kyureq>
+
+;;; Commentary:
+
+;;              .mmmmmmmmmmmmmm.                   .cccccccc!                .(.
+;;  .+eeeee.   .??:   +m<   <mm.    .aaaaaaaa.    ccC!           .+sssss{    (!!
+;; .ee:        .mm:   +mm   .mm_   .aa>   (aaA    cCC           .ss>         1!:
+;; .ee_        .mm:   +mm   .mm_   .aa{    aaA    ccC           .sss.        !!
+;; .ee_ <ee    .mm:   +mm   .mm_   .aa{ .(AaaA    cCC`           .<sssss    .!:
+;; .ee_        .mm:   +mm   .mm_   .aa{ .??aaA    cCCc......         .ss:   ..
+;; .eee....    .<<!   ?<<   .<<`   .aa{    aaA     ?CCCCCCC!    ....(s=: .!!-
+;;  .?eeeee`                       .AA!    AAA                  .ssss<s!   .!!
+
+;;; Code:
+#+end_src
+* Settings
+** Disable GC (temporary)
+無効 -> 512MB にする
+#+begin_src emacs-lisp
+  (setq gc-cons-threshold most-positive-fixnum)
+  (add-hook 'emacs-startup-hook
+		(lambda ()
+		  (setq gc-cons-threshold 536870912))
+#+end_src
+
+** Disable package-initialize
+#+begin_src emacs-lisp
+  (setq package-enable-at-startup nil)
+#+end_src
+** Layout like nano-emacs
+https://github.com/rougier/nano-emacs/blob/b8631088220dbbcd885ad1353bdc52b569655f85/nano-layout.el#L21C1-L32C40
+#+begin_src emacs-lisp
+  (setq default-frame-alist
+	(append (list
+		 '(min-height . 1)
+		 '(height     . 45)
+		 '(min-width  . 1)
+		 '(width      . 81)
+		 '(vertical-scroll-bars . nil)
+		 '(internal-border-width . 24)
+		 '(left-fringe    . 1)
+		 '(right-fringe   . 1)
+		 '(fullscreen . maximized))))
+#+end_src
+
+** Disable scroll bar
+#+begin_src emacs-lisp
+  (scroll-bar-mode -1)
+#+end_src
+** Disable menu bar
+#+begin_src emacs-lisp
+  (push '(menu-bar-lines . 0) default-frame-alist)
+
+#+end_src
+
+** Disable tool bar
+#+begin_src emacs-lisp
+  (push '(tool-bar-lines . 0) default-frame-alist)
+#+end_src
+
+** tikatika wo fusegu
+#+begin_src emacs-lisp
+  (setq frame-inhibit-implied-resize t)
+#+end_src
+
+* Footer
+#+begin_src emacs-lisp
+(provide 'early-init)
+
+;; End:
+;;; early-init.el ends here
+#+end_src
