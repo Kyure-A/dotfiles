@@ -40,6 +40,16 @@
 	    (lambda ()
 	      (setq file-name-handler-alist init/saved-file-name-handler-alist)))
 #+end_src
+** Disable warning
+#+begin_src emacs-lisp
+  (byte-compile-warnings . '(not cl-functions obsolete))
+  (debug-on-error . nil)
+#+end_src
+** Disable screen splitting
+Dired で画面分割されないようにする
+#+begin_src emacs-lisp
+  (set-frame-parameter nil 'unsplittable t)
+#+end_src
 ** install straight.el
 #+begin_src emacs-lisp
   (defvar bootstrap-version)
@@ -242,6 +252,10 @@ leaf で書いた *global-set-key 節を書き直すのがだるいので、名�
   (defalias 'yes-or-no-p 'y-or-n-p)
 #+end_src
 
+*** delete-selection
+#+begin_src emacs-lisp
+  (leaf delete-selection :doc "delete から overwrite に改名したほうがいい" :tag "builtin" :global-minor-mode delete-selection-mode)
+#+end_src
 ** Scroll
 *** fast-scroll
 #+begin_src emacs-lisp
@@ -339,7 +353,34 @@ leaf で書いた *global-set-key 節を書き直すのがだるいので、名�
 
   (leaf save-place-mode :tag "builtin" :global-minor-mode t)
 #+end_src
+** Auto save
+#+begin_src emacs-lisp
+  (leaf auto-save
+    :custom
+    (auto-save-file-name-transforms . '((".*" "~/.tmp/" t)))
+    (auto-save-list-file-prefix . nil)
+    (auto-save-default . nil))
+
+  (leaf autorevert
+    :doc "revert buffers when files on disk change"
+    :tag "builtin"
+    :global-minor-mode global-auto-revert-mode
+    :custom (auto-revert-interval . 1))
+#+end_src
 * Utilities
+** files
+#+begin_src emacs-lisp
+  (leaf files
+    :custom
+    (backup-directory-alist . '((".*" . "~/.tmp")))
+    (create-lockfiles . nil)
+    :config
+    (when (file-exists-p "./elisp")
+      (let ((default-directory (locate-user-emacs-file "./elisp")))
+	(add-to-list 'load-path default-directory)
+	(normal-top-level-add-subdirs-to-load-path))))
+#+end_src
+
 ** Dired (Dirvish)
 #+begin_src emacs-lisp
 (leaf dirvish
@@ -704,248 +745,177 @@ leaf で書いた *global-set-key 節を書き直すのがだるいので、名�
   ;; 	(or (copilot-accept-completion)
   ;; 	    (company-indent-or-complete-common nil)))))
 #+end_src
-* Terminal
+** Competitive Programming
 #+begin_src emacs-lisp
- (leaf vterm
-    :doc "Fully-featured terminal emulator"
-    :req "emacs-25.1"
-    :tag "terminals" "emacs>=25.1"
-    :url "https://github.com/akermu/emacs-libvterm"
-    :emacs>= 25.1
-    :ensure t :require t
-    :custom
-    (vterm-buffer-name-string . t)
-    (vterm-clear-scrollback-when-clearing . t)
-    (vterm-keymap-exceptions . '("<f1>"
-				 "<f2>"
-				 "<f10>"
-				 "C-<prior>"
-				 "C-<next>"
-				 "C-RET"
-				 "C-SPC"
-				 "C-c"
-				 "C-g"
-				 "C-l"
-				 "C-s"
-				 "C-u"
-				 "C-v"
-				 "C-w"
-				 "C-x"
-				 "C-y"
-				 "M-v"
-				 "M-w"
-				 "M-x"
-				 "M-y"))
-    (vterm-max-scrollback . 5000)
-    :config
-    (leaf multi-vterm
-      :doc "Like multi-term.el but for vterm"
-      :req "emacs-26.3" "vterm-0.0" "project-0.3.0"
-      :tag "processes" "terminals" "emacs>=26.3"
-      :url "https://github.com/suonlight/multi-libvterm"
-      :added "2023-07-10"
-      :emacs>= 26.3
-      :ensure t
-      :after vterm project)
-    (leaf vterm-toggle
-      :doc "Toggles between the vterm buffer and other buffers."
-      :req "emacs-25.1" "vterm-0.0.1"
-      :tag "terminals" "vterm" "emacs>=25.1"
-      :url "https://github.com/jixiuf/vterm-toggle"
-      :emacs>= 25.1
-      :ensure t
-      :require t
-      :after vterm)
-    (add-to-list 'vterm-eval-cmds '("update-pwd" (lambda (path) (setq default-directory path)))))
-  
-  (leaf quickrun
-    :doc "Run commands quickly"
-    :req "emacs-24.3"
-    :tag "emacs>=24.3"
-    :url "https://github.com/syohex/emacs-quickrun"
-    :emacs>= 24.3
-    :ensure t :require t
+  (leaf oj
+    :doc "Competitive programming tools client for AtCoder, Codeforces"
+    :req "emacs-26.1" "quickrun-2.2"
+    :tag "convenience" "emacs>=26.1"
+    :url "https://github.com/conao3/oj.el"
+    :emacs>= 26.1
     :after prog
-    :config
-    (push '("*quickrun*") popwin:special-display-config)
-    :preface
-    (defun quickrun-sc (start end)
-      (interactive "r")
-      (if mark-active
-	  (quickrun :start start :end end)
-	(quickrun))))
+    :ensure t :require t
+    :custom
+    (oj-shell-program . "zsh")
+    (oj-open-home-dir . "~/oj-files/")
+    (oj-default-online-judge . 'atcoder)
+    (oj-compiler-c . "gcc")
+    (oj-compiler-python . "cpython"))
 #+end_src
-* Completion
-** Company
+** Editorconfig
 #+begin_src emacs-lisp
-(leaf company
-    :doc "Modular text completion framework"
+  (leaf editorconfig
+    :doc "EditorConfig Emacs Plugin"
+    :req "cl-lib-0.5" "nadvice-0.3" "emacs-24"
+    :tag "emacs>=24"
+    :url "https://github.com/editorconfig/editorconfig-emacs#readme"
+    :emacs>= 24
+    :ensure t :require t
+    :after nadvice
+    :global-minor-mode t)
+#+end_src
+** LSP
+#+begin_src emacs-lisp
+  (leaf lsp-mode
+    :doc "LSP mode"
+    :req "emacs-26.1" "dash-2.18.0" "f-0.20.0" "ht-2.3" "spinner-1.7.3" "markdown-mode-2.3" "lv-0"
+    :tag "languages" "emacs>=26.1" "lsp"
+    :url "https://github.com/emacs-lsp/lsp-mode"
+    :emacs>= 26.1
+    :ensure t :require t
+    :after spinner markdown-mode lv
+    :commands lsp
+    :custom
+    (lsp-enable-snippet . t)
+    (lsp-enable-indentation . nil)
+    (lsp-prefer-flymake . nil)
+    (lsp-document-sync-method . 2)
+    (lsp-inhibit-message . t)
+    (lsp-message-project-root-warning . t)
+    (create-lockfiles . nil)
+    (lsp-prefer-capf . t)
+    (lsp-headerline-breadcrumb-mode . t))
+#+end_src
+** gcmh
+#+begin_src emacs-lisp
+  (leaf gcmh
+    :doc "the Garbage Collector Magic Hack"
+    :req "emacs-24"
+    :tag "internal" "emacs>=24"
+    :url "https://gitlab.com/koral/gcmh"
+    :emacs>= 24
+    :ensure t :require t
+    :hook (after-init-hook . gcmh-mode)
+    :custom (gcmh-verbose . t))
+#+end_src
+** regexp
+#+begin_src emacs-lisp
+  (leaf visual-regexp
+    :doc "A regexp/replace command for Emacs with interactive visual feedback"
+    :req "cl-lib-0.2"
+    :tag "feedback" "visual" "replace" "regexp"
+    :url "https://github.com/benma/visual-regexp.el/"
+    :ensure t :require t)
+#+end_src
+** which-function
+#+begin_src emacs-lisp
+  (leaf which-function-mode :tag "builtin" :custom (which-function-mode . t))
+#+end_src
+** which-key
+#+begin_src emacs-lisp
+  (leaf which-key
+    :doc "Display available keybindings in popup"
+    :req "emacs-24.4"
+    :tag "emacs>=24.4"
+    :url "https://github.com/justbur/emacs-which-key"
+    :emacs>= 24.4
+    :ensure t :require t
+    :global-minor-mode t
+    :config (which-key-setup-side-window-bottom))
+#+end_src
+
+** projectile
+#+begin_src emacs-lisp
+  (leaf projectile
+    :doc "Manage and navigate projects in Emacs easily"
     :req "emacs-25.1"
-    :tag "matching" "convenience" "abbrev" "emacs>=25.1"
-    :url "http://company-mode.github.io/"
+    :tag "convenience" "project" "emacs>=25.1"
+    :url "https://github.com/bbatsov/projectile"
     :emacs>= 25.1
     :ensure t :require t
-    :global-minor-mode global-company-mode
-    :bind (:company-active-map ( "<tab>" . company-complete-common-or-cycle))
-    :custom
-    (company-idle-delay . 0)
-    (company-minimum-prefix-length . 2)
-    (company-selection-wrap-around . t)
-    (company-tooltip-align-annotations . t)
-    (company-require-match . 'never)
-    (company-transformers . '(company-sort-by-statistics company-sort-by-backend-importance))
-    :config
-    
-    (leaf company-box
-      :doc "Company front-end with icons"
-      :req "emacs-26.0.91" "dash-2.19.0" "company-0.9.6" "frame-local-0.0.1"
-      :tag "convenience" "front-end" "completion" "company" "emacs>=26.0.91"
-      :url "https://github.com/sebastiencs/company-box"
-      :emacs>= 26.0
-      :ensure t :require t
-      :require t
-      :after company frame-local
-      :hook ((company-mode-hook . company-box-mode))
-      :custom
-      (company-box-icons-alist . 'company-box-icons-all-the-icons)
-      (company-box-doc-enable . nil))
-
-    (leaf company-clang :doc "company-mode completion backend for Clang" :after company)
-    
-    (leaf company-etags :doc "company-mode completion backend for etags" :after company)
-
-    (leaf company-gtags :doc "company-mode completion backend for GNU Global" :after company)
-    
-    (leaf company-statistics
-      :doc "Sort candidates using completion history"
-      :req "emacs-24.3" "company-0.8.5"
-      :tag "matching" "convenience" "abbrev" "emacs>=24.3"
-      :url "https://github.com/company-mode/company-statistics"
-      :emacs>= 24.3
-      :ensure t :require t
-      :require t
-      :after company
-      :global-minor-mode t
-      :hook (after-init-hook))
-    
-    (leaf company-posframe
-      :doc "Use a posframe as company candidate menu"
-      :req "emacs-26.0" "company-0.9.0" "posframe-0.9.0"
-      :tag "matching" "convenience" "abbrev" "emacs>=26.0"
-      :url "https://github.com/tumashu/company-posframe"
-      :emacs>= 26.0
-      :ensure t :require t
-      :after company posframe
-      :global-minor-mode t)
-    
-    (leaf company-quickhelp
-      :doc "Popup documentation for completion candidates"
-      :req "emacs-24.3" "company-0.8.9" "pos-tip-0.4.6"
-      :tag "quickhelp" "documentation" "popup" "company" "emacs>=24.3"
-      :url "https://www.github.com/expez/company-quickhelp"
-      :emacs>= 24.3
-      :ensure t :require t
-      :after company pos-tip
-      :custom (company-quickhelp-delay . 0.1))
-
-    (leaf company-shell
-      :doc "Company mode backend for shell functions"
-      :req "emacs-24.4" "company-0.8.12" "dash-2.12.0" "cl-lib-0.5"
-      :tag "auto-completion" "shell" "company" "emacs>=24.4"
-      :url "https://github.com/Alexander-Miller/company-shell"
-      :added "2023-04-20"
-      :emacs>= 24.4
-      :ensure t
-      :after company
-      :config (add-to-list 'company-backends 'company-shell))
-    )
+    :after dashboard)
 #+end_src
-** Ivy, counsel
+** smartparens
 #+begin_src emacs-lisp
-(leaf *ivy
+  (leaf smartparens
+    :doc "Automatic insertion, wrapping and paredit-like navigation with user defined pairs."
+    :req "dash-2.13.0" "cl-lib-0.3"
+    :tag "editing" "convenience" "abbrev"
+    :url "https://github.com/Fuco1/smartparens"
+    :ensure t :require t
+    :global-minor-mode smartparens-global-mode show-smartparens-global-mode
     :config
+    (leaf smartparens-config :require t :after smartparens :hook (web-mode-hook . (lambda () (sp-pair "<#" "#>")))))
+#+end_src
+** hydra
+#+begin_src emacs-lisp
+  (leaf hydra
+    :doc "Make bindings that stick around."
+    :req "cl-lib-0.5" "lv-0"
+    :tag "bindings"
+    :url "https://github.com/abo-abo/hydra"
+    :ensure t :require t
+    :after lv)
+#+end_src
+** popwin
+#+begin_src emacs-lisp
+  (leaf popwin
+    :doc "Popup Window Manager"
+    :req "emacs-24.3"
+    :tag "convenience" "emacs>=24.3"
+    :url "https://github.com/emacsorphanage/popwin"
+    :emacs>= 24.3
+    :ensure t
+    :require t
+    :custom
+    (display-buffer-function . 'popwin:display-buffer)
+    (popwin:special-display-config  . t)
+    (popwin:popup-window-position . 'bottom))
+#+end_src
+** onlyonce
+#+begin_src emacs-lisp
+  (leaf onlyonce
+    :require t
+    :quelpa (onlyonce :repo "Kyure-A/onlyonce.el"
+		      :fetcher github
+		      :upgrade t)
+    :config
+    (onlyonce-add 'fira-code-mode-install-fonts)
+    (onlyonce-add 'all-the-icons-install-fonts)
+    (onlyonce-startup))
+#+end_src
+* Input
+** Japanese
+#+begin_src emacs-lisp
+  (leaf mozc
+    :doc "minor mode to input Japanese with Mozc"
+    :tag "input method" "multilingual" "mule"
+    :added "2023-07-20"
+    :ensure t
+    :require t
+    :config (setq mozc-candidate-style 'echo-area))
 
-    (leaf counsel
-      :doc "Various completion functions using Ivy"
-      :req "emacs-24.5" "ivy-0.13.4" "swiper-0.13.4"
-      :tag "tools" "matching" "convenience" "emacs>=24.5"
-      :url "https://github.com/abo-abo/swiper"
-      :emacs>= 24.5
-      :ensure t :require t
-      :after ivy swiper
-      :global-minor-mode t
-      :bind
-      (:counsel-mode-map ([remap find-file] . nil))
-      :custom
-      (counsel-find-file-ignore-regexp . (regexp-opt '("./" "../")))
-      (read-file-name-function . #'disable-counsel-find-file)
-      :preface
-      (leaf disable-counsel-find-file
-	:url "https://qiita.com/takaxp/items/2fde2c119e419713342b#counsel-find-file-%E3%82%92%E4%BD%BF%E3%82%8F%E3%81%AA%E3%81%84"
-	:preface
-	(defun disable-counsel-find-file (&rest args)
-	  "Disable `counsel-find-file' and use the original `find-file' with ARGS."
-	  (let ((completing-read-function #'completing-read-default)
-		(completion-in-region-function #'completion--in-region))
-	    (apply #'read-file-name-default args))))
-      :config
-      
-      (leaf counsel-projectile
-	:doc "Ivy integration for Projectile"
-	:req "counsel-0.13.4" "projectile-2.5.0"
-	:tag "convenience" "project"
-	:url "https://github.com/ericdanan/counsel-projectile"
-	:added "2022-09-01"
-	:ensure t
-	:after counsel projectile
-	:global-minor-mode counsel-projectile-mode))
-    
-    (leaf ivy
-      :doc "Incremental Vertical completYon"
-      :req "emacs-24.5"
-      :tag "matching" "emacs>=24.5"
-      :url "https://github.com/abo-abo/swiper"
-      :emacs>= 24.5
-      :ensure t :require t
-      :global-minor-mode t
-      :custom
-      (ivy-use-virtual-buffers . t)
-      (ivy-wrap . t)
-      (ivy-extra-directories . t)
-      (enable-recursive-minibuffers . t)
-      :config
-      
-      (leaf ivy-rich
-	:doc "More friendly display transformer for ivy"
-	:req "emacs-25.1" "ivy-0.13.0"
-	:tag "ivy" "convenience" "emacs>=25.1"
-	:url "https://github.com/Yevgnen/ivy-rich"
-	:emacs>= 25.1
-	:ensure t :require t
-	:after ivy
-	:global-minor-mode t)
-      
-      (leaf ivy-posframe
-	:doc "Using posframe to show Ivy"
-	:req "emacs-26.0" "posframe-1.0.0" "ivy-0.13.0"
-	:tag "ivy" "matching" "convenience" "abbrev" "emacs>=26.0"
-	:url "https://github.com/tumashu/ivy-posframe"
-	:emacs>= 26.0
-	:ensure t :require t
-	:after posframe ivy
-	:custom (ivy-posframe-display-functions-alist . '((t . ivy-posframe-display-at-frame-center))))
-      )
-
-    (leaf swiper
-      :doc "Isearch with an overview. Oh, man!"
-      :req "emacs-24.5" "ivy-0.13.4"
-      :tag "matching" "emacs>=24.5"
-      :url "https://github.com/abo-abo/swiper"
-      :emacs>= 24.5
-      :ensure t :require t
-      :after ivy))
+  (leaf nu-fun
+    :quelpa (nu-fun :repo "ayanyan/nihongo-util"
+		    :fetcher github
+		    :upgrade t)
+    :require t
+    :custom
+    (nu-my-toten . "，")
+    (nu-my-kuten . "．"))
 #+end_src
 * Visual
+*** all-the-icons
 #+begin_src emacs-lisp
   (leaf all-the-icons
     :doc "A library for inserting Developer icons"
@@ -956,7 +926,7 @@ leaf で書いた *global-set-key 節を書き直すのがだるいので、名�
     :ensure t :require t
     :require t
     :config
-    
+
     (leaf all-the-icons-dired
       :doc "Shows icons for each file in dired mode"
       :req "emacs-24.4" "all-the-icons-2.2.0"
@@ -966,7 +936,7 @@ leaf で書いた *global-set-key 節を書き直すのがだるいので、名�
       :ensure t :require t
       :after all-the-icons
       :hook (dired-mode . all-the-icons-dired-mode))
-    
+
     (leaf all-the-icons-ivy
       :doc "Shows icons while using ivy and counsel"
       :req "emacs-24.4" "all-the-icons-2.4.0" "ivy-0.8.0"
@@ -974,7 +944,7 @@ leaf で書いた *global-set-key 節を書き直すのがだるいので、名�
       :emacs>= 24.4
       :ensure t :require t
       :after all-the-icons ivy)
-    
+
     (leaf all-the-icons-ivy-rich
       :doc "Better experience with icons for ivy"
       :req "emacs-25.1" "ivy-rich-0.1.0" "all-the-icons-2.2.0"
@@ -983,9 +953,10 @@ leaf で書いた *global-set-key 節を書き直すのがだるいので、名�
       :emacs>= 25.1
       :ensure t :require t
       :after ivy-rich all-the-icons
-      :global-minor-mode t)
-    )
+      :global-minor-mode t))
+#+end_src
 
+#+begin_src emacs-lisp
   (leaf beacon
     :doc "Highlight the cursor whenever the window scrolls"
     :req "seq-2.14"
@@ -994,7 +965,6 @@ leaf で書いた *global-set-key 節を書き直すのがだるいので、名�
     :ensure t :require t
     :global-minor-mode t
     :custom (beacon-color . "red"))
-
 
   (leaf display-line-numbers
     :doc "interface for display-line-numbers"
@@ -1041,7 +1011,7 @@ leaf で書いた *global-set-key 節を書き直すのがだるいので、名�
     :hook
     (vterm-mode . hide-mode-line-mode)
     (dashboard-mode . hide-mode-line-mode))
-  
+
   (leaf highlight-indent-guides
     :doc "Minor mode to highlight indentation"
     :req "emacs-24.1"
@@ -1056,21 +1026,12 @@ leaf で書いた *global-set-key 節を書き直すのがだるいので、名�
     (highlight-indent-guides-responsive . t)
     (highlight-indent-guides-method . 'character))
 
-  (leaf highlight-symbol
-    :doc "automatic and manual symbol highlighting"
-    :tag "matching" "faces"
-    :url "http://nschum.de/src/emacs/highlight-symbol/"
-    :ensure t :require t
-    :require t
-    :hook (prog-mode-hook . highlight-symbol-mode)
-    :custom (highlight-symbol-idle-delay . 0.1))
-
   (leaf minimap
     :doc "Sidebar showing a \"mini-map\" of a buffer"
     :url "http://elpa.gnu.org/packages/minimap.html"
     :added "2023-09-05"
     :ensure t)
-  
+
   (leaf neotree
     :doc "A tree plugin like NerdTree for Vim"
     :req "cl-lib-0.5"
@@ -1097,13 +1058,6 @@ leaf で書いた *global-set-key 節を書き直すのがだるいので、名�
 		      (cons page-break-lines-char page-break-lines-char)
 		      (face-attribute 'default :family)))
 
-  (leaf rainbow-delimiters
-    :doc "Highlight brackets according to their depth"
-    :tag "tools" "lisp" "convenience" "faces"
-    :url "https://github.com/Fanael/rainbow-delimiters"
-    :ensure t :require t
-    :hook (prog-mode-hook))
-
   (leaf rainbow-mode
     :doc "Colorize color names in buffers"
     :tag "faces"
@@ -1120,25 +1074,31 @@ leaf で書いた *global-set-key 節を書き直すのがだるいので、名�
     :ensure t :require t
     :global-minor-mode solaire-global-mode)
 #+end_src
-* Input
-** Japanese
+*** Symbol highlighting
 #+begin_src emacs-lisp
-  (leaf mozc
-    :doc "minor mode to input Japanese with Mozc"
-    :tag "input method" "multilingual" "mule"
-    :added "2023-07-20"
-    :ensure t
+  (leaf highlight-symbol
+    :doc "automatic and manual symbol highlighting"
+    :tag "matching" "faces"
+    :url "http://nschum.de/src/emacs/highlight-symbol/"
+    :ensure t :require t
     :require t
-    :config (setq mozc-candidate-style 'echo-area))
+    :hook (prog-mode-hook . highlight-symbol-mode)
+    :custom (highlight-symbol-idle-delay . 0.1))
 
-  (leaf nu-fun
-    :quelpa (nu-fun :repo "ayanyan/nihongo-util"
-		    :fetcher github
-		    :upgrade t)
-    :require t
+  (leaf paren
+    :doc "highlight matching paren"
+    :tag "builtin"
+    :global-minor-mode show-paren-mode
     :custom
-    (nu-my-toten . "，")
-    (nu-my-kuten . "．"))
+    (show-paren-delay . 0)
+    (show-paren-style . 'expression))
+
+  (leaf rainbow-delimiters
+    :doc "Highlight brackets according to their depth"
+    :tag "tools" "lisp" "convenience" "faces"
+    :url "https://github.com/Fanael/rainbow-delimiters"
+    :ensure t :require t
+    :hook (prog-mode-hook))
 #+end_src
 * Programming Languages
 ** Common Lisp
@@ -1423,25 +1383,6 @@ leaf で書いた *global-set-key 節を書き直すのがだるいので、名�
     )
 #+end_src
 
-** pwsh
-#+begin_src emacs-lisp
-  (leaf powershell
-    :doc "Mode for editing PowerShell scripts"
-    :req "emacs-24"
-    :tag "languages" "powershell" "emacs>=24"
-    :url "http://github.com/jschaf/powershell.el"
-    :added "2023-06-02"
-    :emacs>= 24
-    :after prog
-    :ensure t)
-
-  (leaf lsp-pwsh
-    :doc "client for PowerShellEditorServices"
-    :tag "out-of-MELPA" "lsp"
-    :added "2023-06-02"
-    :require t
-    :after lsp powershell)
-#+end_src
 ** Rust
 #+begin_src emacs-lisp
   (leaf rust-mode
@@ -1470,34 +1411,6 @@ leaf で書いた *global-set-key 節を書き直すのがだるいので、名�
     :after lsp
     :hook (rust-mode . lsp)
     :custom (lsp-rust-server . 'rust-analyzer))
-#+end_src
-** Shell Script
-#+begin_src emacs-lisp
-  (leaf sh-mode :require nil)
-
-  (leaf modern-sh
-    :doc "Minor mode for editing shell script"
-    :req "emacs-25.1" "hydra-0.15.0" "eval-in-repl-0.9.7"
-    :tag "programming" "languages" "emacs>=25.1"
-    :url "https://github.com/damon-kwok/modern-sh"
-    :added "2023-04-20"
-    :emacs>= 25.1
-    :ensure t
-    :require t
-    :after hydra eval-in-repl
-    :mode
-    "\\.sh\\'"
-    "\\.zsh\\'"
-    :hook (sh-mode . modern-sh-mode))
-
-  (leaf flymake-shellcheck
-    :doc "A bash/sh Flymake backend powered by ShellCheck"
-    :req "emacs-26"
-    :tag "emacs>=26"
-    :url "https://github.com/federicotdn/flymake-shellcheck"
-    :added "2023-02-13"
-    :emacs>= 26
-    :ensure t)
 #+end_src
 ** Svelte
 #+begin_src emacs-lisp
@@ -1629,6 +1542,15 @@ Nand2tetris で使った
     (leaf html+-mode :require nil)
     (with-eval-after-load 'web-mode (sp-local-pair '(web-mode) "<" ">" :actions :rem))
     (put 'web-mode-markup-indent-offset 'safe-local-variable 'integerp))
+
+  (leaf skewer-mode
+    :doc "live browser JavaScript, CSS, and HTML interaction"
+    :req "simple-httpd-1.4.0" "js2-mode-20090723" "emacs-24"
+    :tag "emacs>=24"
+    :url "https://github.com/skeeto/skewer-mode"
+    :emacs>= 24
+    :ensure t :require t
+    :after js2-mode)
 #+end_src
 ** LaTeX
 #+begin_src emacs-lisp
@@ -1739,121 +1661,80 @@ Nand2tetris で使った
     "\\.yml$"
     "\\.yaml$")
 #+end_src
-* raw
-;; ---------------------------------------------------------------------------------------------- ;;
-
-(leaf *core-packages
-  :doc "基幹部分の設定"
-  :config
-
-  (leaf auto-save
-    :custom
-    (auto-save-file-name-transforms . '((".*" "~/.tmp/" t)))
-    (auto-save-list-file-prefix . nil)
-    (auto-save-default . nil))
-
-  (leaf bytecomp
-    :custom
-    (byte-compile-warnings . '(not cl-functions obsolete))
-    (debug-on-error . nil))
-  
-  (leaf color :require t)
-
-  (leaf files
-    :custom
-    (backup-directory-alist . '((".*" . "~/.tmp")))
-    (create-lockfiles . nil)
-    :config
-    (when (file-exists-p "./elisp")
-      (let ((default-directory (locate-user-emacs-file "./elisp")))
-	(add-to-list 'load-path default-directory)
-	(normal-top-level-add-subdirs-to-load-path)))
-    )
-
-  (leaf frame :config (set-frame-parameter nil 'unsplittable t))
-
-  (leaf posframe
-    :doc "Pop a posframe (just a frame) at point"
-    :req "emacs-26.1"
-    :tag "tooltip" "convenience" "emacs>=26.1"
-    :url "https://github.com/tumashu/posframe"
-    :emacs>= 26.1
+* Shell
+** Vterm
+#+begin_src emacs-lisp
+ (leaf vterm
+    :doc "Fully-featured terminal emulator"
+    :req "emacs-25.1"
+    :tag "terminals" "emacs>=25.1"
+    :url "https://github.com/akermu/emacs-libvterm"
+    :emacs>= 25.1
     :ensure t :require t
+    :custom
+    (vterm-buffer-name-string . t)
+    (vterm-clear-scrollback-when-clearing . t)
+    (vterm-keymap-exceptions . '("<f1>"
+				 "<f2>"
+				 "<f10>"
+				 "C-<prior>"
+				 "C-<next>"
+				 "C-RET"
+				 "C-SPC"
+				 "C-c"
+				 "C-g"
+				 "C-l"
+				 "C-s"
+				 "C-u"
+				 "C-v"
+				 "C-w"
+				 "C-x"
+				 "C-y"
+				 "M-v"
+				 "M-w"
+				 "M-x"
+				 "M-y"))
+    (vterm-max-scrollback . 5000)
     :config
-    (leaf pos-tip
-      :doc "Show tooltip at point"
-      :tag "tooltip"
-      :ensure t :require t))
+    (leaf multi-vterm
+      :doc "Like multi-term.el but for vterm"
+      :req "emacs-26.3" "vterm-0.0" "project-0.3.0"
+      :tag "processes" "terminals" "emacs>=26.3"
+      :url "https://github.com/suonlight/multi-libvterm"
+      :added "2023-07-10"
+      :emacs>= 26.3
+      :ensure t
+      :after vterm project)
+    (leaf vterm-toggle
+      :doc "Toggles between the vterm buffer and other buffers."
+      :req "emacs-25.1" "vterm-0.0.1"
+      :tag "terminals" "vterm" "emacs>=25.1"
+      :url "https://github.com/jixiuf/vterm-toggle"
+      :emacs>= 25.1
+      :ensure t
+      :require t
+      :after vterm)
+    (add-to-list 'vterm-eval-cmds '("update-pwd" (lambda (path) (setq default-directory path)))))
   
-  
-  )
-
-;; ---------------------------------------------------------------------------------------------- ;;
-
-(leaf *inbox
-  :doc "分類が面倒なパッケージを入れる"
-  :config
-
-  (leaf dedis
-    :quelpa (dedis :repo "Kyure-A/dedis.el"
-		   :fetcher github
-		   :upgrade t))
-  
-  (leaf gcmh
-    :doc "the Garbage Collector Magic Hack"
-    :req "emacs-24"
-    :tag "internal" "emacs>=24"
-    :url "https://gitlab.com/koral/gcmh"
-    :emacs>= 24
-    :ensure t :require t
-    :hook (after-init-hook . gcmh-mode)
-    :custom (gcmh-verbose . t)) 
-  
-  (leaf tetris
-    :bind
-    (:tetris-mode-map
-     ("w" . tetris-rotate-prev)
-     ("a" . tetris-move-left)
-     ("s" . tetris-move-down)
-     ("d" . tetris-move-right)
-     ("RET" . tetris-move-bottom)))
-
-  (leaf onlyonce
-    :require t
-    :quelpa (onlyonce :repo "Kyure-A/onlyonce.el"
-		      :fetcher github
-		      :upgrade t)
-    :config
-    (onlyonce-add 'fira-code-mode-install-fonts)
-    (onlyonce-add 'all-the-icons-install-fonts)
-    (onlyonce-startup))
-  )
-
-;; ---------------------------------------------------------------------------------------------- ;;
-
-(leaf *edit
-  :doc "補完や構文のチェック, 入力に関するプラグイン"
-  :config
-  
-  (leaf aggressive-indent
-    :doc "Minor mode to aggressively keep your code always indented"
+  (leaf quickrun
+    :doc "Run commands quickly"
     :req "emacs-24.3"
-    :tag "tools" "maint" "lisp" "indent" "emacs>=24.3"
-    :url "https://github.com/Malabarba/aggressive-indent-mode"
+    :tag "emacs>=24.3"
+    :url "https://github.com/syohex/emacs-quickrun"
     :emacs>= 24.3
-    :ensure t
-    :require t
-    :global-minor-mode global-aggressive-indent-mode)
-
-  (leaf autorevert
-    :doc "revert buffers when files on disk change"
-    :tag "builtin"
-    :global-minor-mode global-auto-revert-mode
-    :custom (auto-revert-interval . 1))
-  
-
-  (leaf delete-selection :doc "delete から overwrite に改名したほうがいい" :tag "builtin" :global-minor-mode delete-selection-mode)
-  
+    :ensure t :require t
+    :after prog
+    :config
+    (push '("*quickrun*") popwin:special-display-config)
+    :preface
+    (defun quickrun-sc (start end)
+      (interactive "r")
+      (if mark-active
+	  (quickrun :start start :end end)
+	(quickrun))))
+#+end_src
+** exec-path-from-shell
+#+begin_src emacs-lisp
   (leaf exec-path-from-shell
     :doc "Get environment variables such as $PATH from the shell"
     :req "emacs-24.1" "cl-lib-0.6"
@@ -1868,7 +1749,252 @@ Nand2tetris で使った
     (exec-path-from-shell-variables . '("ASDF_CONFIG_FILE" "ASDF_DATA_DIR" "ASDF_DEFAULT_TOOL_VERSIONS_FILENAME" "ASDF_DIR"
 					"GPG_AGENT_INFO" "GPG_KEY_ID" "PATH" "SHELL" "TEXMFHOME" "WSL_DISTRO_NAME" "http_proxy"))
     :config (exec-path-from-shell-initialize))
-  
+#+end_src
+** Shell Script
+#+begin_src emacs-lisp
+  (leaf sh-mode :require nil)
+
+  (leaf modern-sh
+    :doc "Minor mode for editing shell script"
+    :req "emacs-25.1" "hydra-0.15.0" "eval-in-repl-0.9.7"
+    :tag "programming" "languages" "emacs>=25.1"
+    :url "https://github.com/damon-kwok/modern-sh"
+    :added "2023-04-20"
+    :emacs>= 25.1
+    :ensure t
+    :require t
+    :after hydra eval-in-repl
+    :mode
+    "\\.sh\\'"
+    "\\.zsh\\'"
+    :hook (sh-mode . modern-sh-mode))
+
+  (leaf flymake-shellcheck
+    :doc "A bash/sh Flymake backend powered by ShellCheck"
+    :req "emacs-26"
+    :tag "emacs>=26"
+    :url "https://github.com/federicotdn/flymake-shellcheck"
+    :added "2023-02-13"
+    :emacs>= 26
+    :ensure t)
+#+end_src
+** pwsh
+#+begin_src emacs-lisp
+  (leaf powershell
+    :doc "Mode for editing PowerShell scripts"
+    :req "emacs-24"
+    :tag "languages" "powershell" "emacs>=24"
+    :url "http://github.com/jschaf/powershell.el"
+    :added "2023-06-02"
+    :emacs>= 24
+    :after prog
+    :ensure t)
+
+  (leaf lsp-pwsh
+    :doc "client for PowerShellEditorServices"
+    :tag "out-of-MELPA" "lsp"
+    :added "2023-06-02"
+    :require t
+    :after lsp powershell)
+#+end_src
+* Completion
+** Company
+#+begin_src emacs-lisp
+(leaf company
+    :doc "Modular text completion framework"
+    :req "emacs-25.1"
+    :tag "matching" "convenience" "abbrev" "emacs>=25.1"
+    :url "http://company-mode.github.io/"
+    :emacs>= 25.1
+    :ensure t :require t
+    :global-minor-mode global-company-mode
+    :bind (:company-active-map ( "<tab>" . company-complete-common-or-cycle))
+    :custom
+    (company-idle-delay . 0)
+    (company-minimum-prefix-length . 2)
+    (company-selection-wrap-around . t)
+    (company-tooltip-align-annotations . t)
+    (company-require-match . 'never)
+    (company-transformers . '(company-sort-by-statistics company-sort-by-backend-importance))
+    :config
+    
+    (leaf company-box
+      :doc "Company front-end with icons"
+      :req "emacs-26.0.91" "dash-2.19.0" "company-0.9.6" "frame-local-0.0.1"
+      :tag "convenience" "front-end" "completion" "company" "emacs>=26.0.91"
+      :url "https://github.com/sebastiencs/company-box"
+      :emacs>= 26.0
+      :ensure t :require t
+      :require t
+      :after company frame-local
+      :hook ((company-mode-hook . company-box-mode))
+      :custom
+      (company-box-icons-alist . 'company-box-icons-all-the-icons)
+      (company-box-doc-enable . nil))
+
+    (leaf company-clang :doc "company-mode completion backend for Clang" :after company)
+    
+    (leaf company-etags :doc "company-mode completion backend for etags" :after company)
+
+    (leaf company-gtags :doc "company-mode completion backend for GNU Global" :after company)
+    
+    (leaf company-statistics
+      :doc "Sort candidates using completion history"
+      :req "emacs-24.3" "company-0.8.5"
+      :tag "matching" "convenience" "abbrev" "emacs>=24.3"
+      :url "https://github.com/company-mode/company-statistics"
+      :emacs>= 24.3
+      :ensure t :require t
+      :require t
+      :after company
+      :global-minor-mode t
+      :hook (after-init-hook))
+    
+    (leaf company-posframe
+      :doc "Use a posframe as company candidate menu"
+      :req "emacs-26.0" "company-0.9.0" "posframe-0.9.0"
+      :tag "matching" "convenience" "abbrev" "emacs>=26.0"
+      :url "https://github.com/tumashu/company-posframe"
+      :emacs>= 26.0
+      :ensure t :require t
+      :after company posframe
+      :global-minor-mode t)
+    
+    (leaf company-quickhelp
+      :doc "Popup documentation for completion candidates"
+      :req "emacs-24.3" "company-0.8.9" "pos-tip-0.4.6"
+      :tag "quickhelp" "documentation" "popup" "company" "emacs>=24.3"
+      :url "https://www.github.com/expez/company-quickhelp"
+      :emacs>= 24.3
+      :ensure t :require t
+      :after company pos-tip
+      :custom (company-quickhelp-delay . 0.1))
+
+    (leaf company-shell
+      :doc "Company mode backend for shell functions"
+      :req "emacs-24.4" "company-0.8.12" "dash-2.12.0" "cl-lib-0.5"
+      :tag "auto-completion" "shell" "company" "emacs>=24.4"
+      :url "https://github.com/Alexander-Miller/company-shell"
+      :added "2023-04-20"
+      :emacs>= 24.4
+      :ensure t
+      :after company
+      :config (add-to-list 'company-backends 'company-shell))
+    )
+#+end_src
+** Ivy, counsel
+#+begin_src emacs-lisp
+(leaf *ivy
+    :config
+
+    (leaf counsel
+      :doc "Various completion functions using Ivy"
+      :req "emacs-24.5" "ivy-0.13.4" "swiper-0.13.4"
+      :tag "tools" "matching" "convenience" "emacs>=24.5"
+      :url "https://github.com/abo-abo/swiper"
+      :emacs>= 24.5
+      :ensure t :require t
+      :after ivy swiper
+      :global-minor-mode t
+      :bind
+      (:counsel-mode-map ([remap find-file] . nil))
+      :custom
+      (counsel-find-file-ignore-regexp . (regexp-opt '("./" "../")))
+      (read-file-name-function . #'disable-counsel-find-file)
+      :preface
+      (leaf disable-counsel-find-file
+	:url "https://qiita.com/takaxp/items/2fde2c119e419713342b#counsel-find-file-%E3%82%92%E4%BD%BF%E3%82%8F%E3%81%AA%E3%81%84"
+	:preface
+	(defun disable-counsel-find-file (&rest args)
+	  "Disable `counsel-find-file' and use the original `find-file' with ARGS."
+	  (let ((completing-read-function #'completing-read-default)
+		(completion-in-region-function #'completion--in-region))
+	    (apply #'read-file-name-default args))))
+      :config
+      
+      (leaf counsel-projectile
+	:doc "Ivy integration for Projectile"
+	:req "counsel-0.13.4" "projectile-2.5.0"
+	:tag "convenience" "project"
+	:url "https://github.com/ericdanan/counsel-projectile"
+	:added "2022-09-01"
+	:ensure t
+	:after counsel projectile
+	:global-minor-mode counsel-projectile-mode))
+    
+    (leaf ivy
+      :doc "Incremental Vertical completYon"
+      :req "emacs-24.5"
+      :tag "matching" "emacs>=24.5"
+      :url "https://github.com/abo-abo/swiper"
+      :emacs>= 24.5
+      :ensure t :require t
+      :global-minor-mode t
+      :custom
+      (ivy-use-virtual-buffers . t)
+      (ivy-wrap . t)
+      (ivy-extra-directories . t)
+      (enable-recursive-minibuffers . t)
+      :config
+      
+      (leaf ivy-rich
+	:doc "More friendly display transformer for ivy"
+	:req "emacs-25.1" "ivy-0.13.0"
+	:tag "ivy" "convenience" "emacs>=25.1"
+	:url "https://github.com/Yevgnen/ivy-rich"
+	:emacs>= 25.1
+	:ensure t :require t
+	:after ivy
+	:global-minor-mode t)
+      
+      (leaf ivy-posframe
+	:doc "Using posframe to show Ivy"
+	:req "emacs-26.0" "posframe-1.0.0" "ivy-0.13.0"
+	:tag "ivy" "matching" "convenience" "abbrev" "emacs>=26.0"
+	:url "https://github.com/tumashu/ivy-posframe"
+	:emacs>= 26.0
+	:ensure t :require t
+	:after posframe ivy
+	:custom (ivy-posframe-display-functions-alist . '((t . ivy-posframe-display-at-frame-center))))
+      )
+
+    (leaf swiper
+      :doc "Isearch with an overview. Oh, man!"
+      :req "emacs-24.5" "ivy-0.13.4"
+      :tag "matching" "emacs>=24.5"
+      :url "https://github.com/abo-abo/swiper"
+      :emacs>= 24.5
+      :ensure t :require t
+      :after ivy))
+#+end_src
+* Code formatter
+** Prettier
+#+begin_src emacs-lisp
+  (leaf prettier
+    :doc "Code formatting with Prettier"
+    :req "emacs-26.1" "iter2-0.9" "nvm-0.2" "editorconfig-0.8"
+    :tag "files" "languages" "convenience" "emacs>=26.1"
+    :url "https://github.com/jscheid/prettier.el"
+    :added "2023-10-20"
+    :emacs>= 26.1
+    :ensure t
+    :after iter2 nvm editorconfig
+    :hook (after-init-hook . global-prettier-mode))
+#+end_src
+** Aggressive-indent
+#+begin_src emacs-lisp
+  (leaf aggressive-indent
+    :doc "Minor mode to aggressively keep your code always indented"
+    :req "emacs-24.3"
+    :tag "tools" "maint" "lisp" "indent" "emacs>=24.3"
+    :url "https://github.com/Malabarba/aggressive-indent-mode"
+    :emacs>= 24.3
+    :ensure t
+    :require t
+    :global-minor-mode global-aggressive-indent-mode)
+#+end_src
+* Syntax Checker
+#+begin_src emacs-lisp
   (leaf flycheck
     :doc "On-the-fly syntax checking"
     :req "dash-2.12.1" "pkg-info-0.4" "let-alist-1.0.4" "seq-1.11" "emacs-24.3"
@@ -1881,155 +2007,7 @@ Nand2tetris で使った
 	   ("M-n" . flycheck-next-error)
 	   ("M-p" . flycheck-previous-error))
     :custom (flycheck-idle-change-delay . 0))
-  
-  (leaf hydra
-    :doc "Make bindings that stick around."
-    :req "cl-lib-0.5" "lv-0"
-    :tag "bindings"
-    :url "https://github.com/abo-abo/hydra"
-    :ensure t :require t
-    :after lv)
-  
-  (leaf paren
-    :doc "highlight matching paren"
-    :tag "builtin"
-    :global-minor-mode show-paren-mode
-    :custom
-    (show-paren-delay . 0)
-    (show-paren-style . 'expression))
-
-  (leaf popwin
-    :doc "Popup Window Manager"
-    :req "emacs-24.3"
-    :tag "convenience" "emacs>=24.3"
-    :url "https://github.com/emacsorphanage/popwin"
-    :emacs>= 24.3
-    :ensure t
-    :require t
-    :custom
-    (display-buffer-function . 'popwin:display-buffer)
-    (popwin:special-display-config  . t)
-    (popwin:popup-window-position . 'bottom))
-
-  (leaf skewer-mode
-    :doc "live browser JavaScript, CSS, and HTML interaction"
-    :req "simple-httpd-1.4.0" "js2-mode-20090723" "emacs-24"
-    :tag "emacs>=24"
-    :url "https://github.com/skeeto/skewer-mode"
-    :emacs>= 24
-    :ensure t :require t
-    :after js2-mode)
-
-  (leaf smartparens
-    :doc "Automatic insertion, wrapping and paredit-like navigation with user defined pairs."
-    :req "dash-2.13.0" "cl-lib-0.3"
-    :tag "editing" "convenience" "abbrev"
-    :url "https://github.com/Fuco1/smartparens"
-    :ensure t :require t
-    :global-minor-mode smartparens-global-mode show-smartparens-global-mode
-    :config
-    (leaf smartparens-config :require t :after smartparens :hook (web-mode-hook . (lambda () (sp-pair "<#" "#>")))))
-  
-  (leaf visual-regexp
-    :doc "A regexp/replace command for Emacs with interactive visual feedback"
-    :req "cl-lib-0.2"
-    :tag "feedback" "visual" "replace" "regexp"
-    :url "https://github.com/benma/visual-regexp.el/"
-    :ensure t :require t)
-
-  (leaf which-function-mode :tag "builtin" :custom (which-function-mode . t))
-
-  (leaf which-key
-    :doc "Display available keybindings in popup"
-    :req "emacs-24.4"
-    :tag "emacs>=24.4"
-    :url "https://github.com/justbur/emacs-which-key"
-    :emacs>= 24.4
-    :ensure t :require t
-    :global-minor-mode t
-    :config (which-key-setup-side-window-bottom))
-  
-  (leaf yafolding
-    :doc "Folding code blocks based on indentation"
-    :tag "folding"
-    :ensure t :require t
-    :hook (prog-mode-hook . yafolding-mode))
-  
-  )
-
-;; ---------------------------------------------------------------------------------------------- ;;
-
-(leaf *general
-  :config
-  
-  (leaf editorconfig
-    :doc "EditorConfig Emacs Plugin"
-    :req "cl-lib-0.5" "nadvice-0.3" "emacs-24"
-    :tag "emacs>=24"
-    :url "https://github.com/editorconfig/editorconfig-emacs#readme"
-    :emacs>= 24
-    :ensure t :require t
-    :after nadvice
-    :global-minor-mode t)
-
-  (leaf lsp-mode
-    :doc "LSP mode"
-    :req "emacs-26.1" "dash-2.18.0" "f-0.20.0" "ht-2.3" "spinner-1.7.3" "markdown-mode-2.3" "lv-0"
-    :tag "languages" "emacs>=26.1" "lsp"
-    :url "https://github.com/emacs-lsp/lsp-mode"
-    :url "https://blog.medalotte.net/archives/473"
-    :emacs>= 26.1
-    :ensure t :require t
-    :after spinner markdown-mode lv
-    :commands lsp
-    :custom
-    (lsp-enable-snippet . t)
-    (lsp-enable-indentation . nil)
-    (lsp-prefer-flymake . nil)
-    (lsp-document-sync-method . 2)
-    (lsp-inhibit-message . t)
-    (lsp-message-project-root-warning . t)
-    (create-lockfiles . nil)
-    (lsp-prefer-capf . t)
-    (lsp-headerline-breadcrumb-mode . t))
-  
-  (leaf oj
-    :doc "Competitive programming tools client for AtCoder, Codeforces"
-    :req "emacs-26.1" "quickrun-2.2"
-    :tag "convenience" "emacs>=26.1"
-    :url "https://github.com/conao3/oj.el"
-    :emacs>= 26.1
-    :after prog
-    :ensure t :require t
-    :custom
-    (oj-shell-program . "zsh")
-    (oj-open-home-dir . "~/oj-files/")
-    (oj-default-online-judge . 'atcoder)
-    (oj-compiler-c . "gcc")
-    (oj-compiler-python . "cpython"))
-
-  (leaf projectile
-    :doc "Manage and navigate projects in Emacs easily"
-    :req "emacs-25.1"
-    :tag "convenience" "project" "emacs>=25.1"
-    :url "https://github.com/bbatsov/projectile"
-    :emacs>= 25.1
-    :ensure t :require t
-    :after dashboard)
-
-  (leaf prettier
-    :doc "Code formatting with Prettier"
-    :req "emacs-26.1" "iter2-0.9" "nvm-0.2" "editorconfig-0.8"
-    :tag "files" "languages" "convenience" "emacs>=26.1"
-    :url "https://github.com/jscheid/prettier.el"
-    :added "2023-10-20"
-    :emacs>= 26.1
-    :ensure t
-    :after iter2 nvm editorconfig
-    :hook (after-init-hook . global-prettier-mode))
-  
-  )
-
+#+end_src
 * Footer
 #+begin_src emacs-lisp
 (provide 'init)
