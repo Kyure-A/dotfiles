@@ -51,6 +51,9 @@ Dired で画面分割されないようにする
   (set-frame-parameter nil 'unsplittable t)
 #+end_src
 ** install straight.el
+
+https://github.com/radian-software/straight.el#getting-started
+
 #+begin_src emacs-lisp
   (defvar bootstrap-version)
   (let ((bootstrap-file
