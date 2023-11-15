@@ -302,7 +302,8 @@ https://qiita.com/ballforest/items/5a76f284af254724144a"
     :added "2022-09-09"
     :emacs>= 27.1
     :ensure t
-    :require t)
+    :require
+    :global-minor-mode t)
 
   (leaf mozc
     :doc "minor mode to input Japanese with Mozc"
@@ -341,13 +342,6 @@ https://qiita.com/ballforest/items/5a76f284af254724144a"
     :added "2023-06-14"
     :ensure t)
   
-  (leaf smooth-scrolling
-    :doc "Make emacs scroll smoothly"
-    :tag "convenience"
-    :url "http://github.com/aspiers/smooth-scrolling/"
-    :added "2022-09-09"
-    :ensure t)
-
   (leaf sublimity
     :doc "smooth-scrolling, minimap and distraction-free mode"
     :req "emacs-26.1"

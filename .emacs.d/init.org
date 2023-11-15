@@ -265,9 +265,12 @@ leaf で書いた *global-set-key 節を書き直すのがだるいので、名�
 #+begin_src emacs-lisp
   (leaf delete-selection :doc "delete から overwrite に改名したほうがいい" :tag "builtin" :global-minor-mode delete-selection-mode)
 #+end_src
-** Scroll
+** Scrolling
 *** fast-scroll
 #+begin_src emacs-lisp
+  (eval-when-compile
+    (straight-use-package 'fast-scroll))
+
   (leaf fast-scroll
     :doc "Some utilities for faster scrolling over large buffers."
     :req "emacs-25.1" "cl-lib-0.6.1"
@@ -288,15 +291,16 @@ leaf で書いた *global-set-key 節を書き直すのがだるいので、名�
 
 *** good-scroll
 #+begin_src emacs-lisp
-  (leaf good-scroll
-    :doc "Good pixel line scrolling"
-    :req "emacs-27.1"
-    :tag "emacs>=27.1"
-    :url "https://github.com/io12/good-scroll.el"
-    :added "2022-09-09"
-    :emacs>= 27.1
-    :ensure t
-    :require t)
+    (leaf good-scroll
+      :doc "Good pixel line scrolling"
+      :req "emacs-27.1"
+      :tag "emacs>=27.1"
+      :url "https://github.com/io12/good-scroll.el"
+      :added "2022-09-09"
+      :emacs>= 27.1
+      :ensure t
+      :require t
+      :global-minor-mode t)
 #+end_src
 *** mwheel
 #+begin_src emacs-lisp
@@ -305,16 +309,6 @@ leaf で書いた *global-set-key 節を書き直すのがだるいので、名�
     (mouse-wheel-progressive-speed . nil)
     (scroll-preserve-screen-position . 'always))
 #+end_src
-*** smart-scroll
-#+begin_src emacs-lisp
-  (leaf smooth-scrolling
-    :doc "Make emacs scroll smoothly"
-    :tag "convenience"
-    :url "http://github.com/aspiers/smooth-scrolling/"
-    :added "2022-09-09"
-    :ensure t)
-#+end_src
-
 *** sublimity
 #+begin_src emacs-lisp
   (leaf sublimity
@@ -1300,6 +1294,25 @@ leaf で書いた *global-set-key 節を書き直すのがだるいので、名�
     :url "https://github.com/chuntaro/emacs-promise"
     :emacs>= 25.1
     :ensure t :require t)
+  
+  (leaf package-build
+    :doc "Tools for assembling a package archive"
+    :req "emacs-26.1"
+    :tag "tools" "maint" "emacs>=26.1"
+    :url "https://github.com/melpa/package-build"
+    :added "2023-11-15"
+    :emacs>= 26.1
+    :ensure t)
+
+  (leaf package-lint
+    :doc "A linting library for elisp package authors"
+    :req "cl-lib-0.5" "emacs-24.4" "let-alist-1.0.6" "compat-29.1"
+    :tag "lisp" "emacs>=24.4"
+    :url "https://github.com/purcell/package-lint"
+    :added "2023-11-15"
+    :emacs>= 24.4
+    :ensure t
+    :after compat)
 
   (leaf queue
     :doc "Queue data structure"
