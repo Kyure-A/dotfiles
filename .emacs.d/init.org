@@ -152,6 +152,12 @@ leaf で書いた *global-set-key 節を書き直すのがだるいので、名�
       `(progn ,@bindings)))
 #+end_src
 
+*** when-wsl
+#+begin_src emacs-lisp
+(defmacro when-wsl (&rest body)
+  (when (executable-find "wslpath")
+    `(progn ,@body)))
+#+end_src
 ** System language
 #+begin_src emacs-lisp
   (set-language-environment "Japanese")
