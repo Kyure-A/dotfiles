@@ -324,64 +324,47 @@ leaf で書いた *global-set-key 節を書き直すのがだるいので、名�
   (leaf delete-selection :doc "delete から overwrite に改名したほうがいい" :tag "builtin" :global-minor-mode delete-selection-mode)
 #+end_src
 ** Scrolling
-*** fast-scroll
+*** [[https://github.com/ahungry/fast-scroll][fast-scroll]]
 #+begin_src emacs-lisp
   (eval-when-compile
     (straight-use-package 'fast-scroll))
 
-  (leaf fast-scroll
-    :doc "Some utilities for faster scrolling over large buffers."
-    :req "emacs-25.1" "cl-lib-0.6.1"
-    :tag "scrolling" "scroll" "fast" "convenience" "ahungry" "emacs>=25.1"
-    :url "https://github.com/ahungry/fast-scroll"
-    :emacs>= 25.1
-    :ensure t :require t
-    :hook
-    (after-init-hook . fast-scroll-mode)
-    (fast-scroll-start-hook . (lambda () (flycheck-mode -1)))
-    (fast-scroll-end-hook . (lambda () (flycheck-mode 1)))
-    :custom
-    (fast-but-imprecise-scrolling . t)
-    (jit-lock-defer-time . 0)
-    :config
-    (fast-scroll-config))
+  (with-delayed-execution-priority-high
+    (message "Installing 'fast-scroll'...")
+    (require 'fast-scroll)
+    (add-hook 'fast-scroll-start-hook (lambda () (flycheck-mode -1)))
+    (add-hook 'fast-scroll-end-hook (lambda () (flycheck-mode 1)))
+    (fast-scroll-config)
+    (fast-scroll-mode 1))
 #+end_src
 
-*** good-scroll
+*** [[https://github.com/io12/good-scroll.el][good-scroll]]
 #+begin_src emacs-lisp
-    (leaf good-scroll
-      :doc "Good pixel line scrolling"
-      :req "emacs-27.1"
-      :tag "emacs>=27.1"
-      :url "https://github.com/io12/good-scroll.el"
-      :added "2022-09-09"
-      :emacs>= 27.1
-      :ensure t
-      :require t
-      :global-minor-mode t)
+  (eval-when-compile
+    (straight-use-package 'good-scroll))
+
+  (with-delayed-execution-priority-high
+    (message "Installing 'good-scroll'...")
+    (require 'good-scroll))
 #+end_src
 *** mwheel
 #+begin_src emacs-lisp
-  (leaf mwheel
-    :custom
-    (mouse-wheel-progressive-speed . nil)
-    (scroll-preserve-screen-position . 'always))
+  (setq mouse-wheel-progressive-speed nil)
+  (setq scroll-preserve-screen-position 'always)
 #+end_src
-*** sublimity
+*** [[https://github.com/zk-phi/sublimity][sublimity]]
 #+begin_src emacs-lisp
-  (leaf sublimity
-    :doc "smooth-scrolling, minimap and distraction-free mode"
-    :req "emacs-26.1"
-    :tag "emacs>=26.1"
-    :url "https://github.com/zk-phi/sublimity"
-    :emacs>= 26.1
-    :ensure t :require t
-    :global-minor-mode t
-    :config
-    (leaf sublimity-attractive :require t
-      :custom (sublimity-attractive-centering-width . 200))
-    (leaf sublimity-scroll :require t
-      :custom (sublimity-scroll-weight . 5) (sublimity-scroll-drift-length . 10)))
+  (eval-when-compile
+    (straight-use-package 'sublimity))
+
+  (with-delayed-execution-priority-high
+   (message "Installing 'sublimity'...")
+   (require 'sublimity)
+   (require 'sublimity-scroll)
+   (setq sublimity-scroll-weight 5)
+   (setq sublimity-scroll-drift-length 10)
+   (require 'sublimity-attractive)
+   (setq sublimity-attractive-centering-width 200))
 #+end_src
 
 *** yascroll
