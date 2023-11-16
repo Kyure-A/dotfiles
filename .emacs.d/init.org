@@ -19,10 +19,17 @@
 ;;; Code:
 #+end_src 
 * Initialize
-** environment
-*** profiler
+** Environment
+*** Profiler
 #+begin_src emacs-lisp
   (defconst Kyure_A/enable-profiler nil)
+#+end_src
+
+** Profiler
+#+begin_src emacs-lisp
+  (when Kyure_A/enable-profiler
+    (require 'profiler)
+    (profiler-start 'cpu))
 #+end_src
 
 ** User settings
@@ -2031,6 +2038,13 @@ Nand2tetris で使った
     :custom (flycheck-idle-change-delay . 0))
 #+end_src
 * Footer
+** Profiler
+#+begin_src emacs-lisp
+(when Kyure_A/enable-profiler
+  (profiler-report)
+  (profiler-stop))
+#+end_src
+** Footer
 #+begin_src emacs-lisp
 (provide 'init)
 
