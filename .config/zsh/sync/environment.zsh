@@ -2,8 +2,8 @@ HISTFILE=~/.zhistory
 HISTSIZE=100000
 SAVEHIST=100000
 
-export EDITOR=emacs
-export SUDO_EDITOR=emacs
+export EDITOR=emacsclient
+export SUDO_EDITOR=emacsclient
 export GIT_MERGE_AUTOEDIT=no
 
 WORDCHARS=${WORDCHARS//\/[&.;]} # 単語区切り文字の設定
