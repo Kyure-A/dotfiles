@@ -35,7 +35,7 @@
   ("C-<backspace>" . backward-delete-word)
   ("C-<left>" . centaur-tabs-forward)
   ("C-<right>" . centaur-tabs-backward)
-  ("C-RET" . newline)
+  ("C-<return>" . newline)
   ("C-SPC" . toggle-input-method)
 
   ;; C-x
@@ -57,7 +57,7 @@
   ("C-c p" . smartparens-global-mode)
   ("C-c s" . Kyure_A/start-repl)
   ("C-c t" . centaur-tabs-counsel-switch-group)
-  
+  ("C-c r" . vr/replace)
   ;; C-l
   ("C-l" . nil)
   ("C-l C-l" . lsp)
@@ -72,21 +72,20 @@
   
   ;; C-<any>
   ("C-a" . mwim-beginning-of-code-or-line)
-  ("C-b". backward-char)
   ("C-d" . smart-hungry-delete-backward-char)
   ("C-e" . mwim-end-of-code-or-line)
-  ("C-f" . forward-char)
-  ("C-n" . next-line)
-  ("C-p" . previous-line)
+  ("C-h" . smart-hungry-delete-backward-char)
+  ;; ("C-j" . nil)
+  ("C-m" . smart-newline)
+  ("C-o" . nil)
   ("C-u" . undo-tree-undo)
   ("C-r" . undo-tree-redo)
   ("C-s" . swiper)
   ("C-z" . undo-tree-undo) ;; よく間違ってとまってかす
   ("C-/" . other-window)
-  
+  ("C-;" . smart-hungry-delete-forward-char)
   ;; M-<any>
   ("M-k" . backward-kill-line)
-  ("M-q" . vr/replace)
   ("M-x" . counsel-M-x)
   
   :config
@@ -252,6 +251,16 @@ https://qiita.com/ballforest/items/5a76f284af254724144a"
   :doc "分類が面倒なパッケージを入れる"
   :config
 
+  (leaf arduino-mode
+    :doc "Major mode for editing Arduino code"
+    :req "emacs-25.1" "spinner-1.7.3"
+    :tag "arduino" "languages" "emacs>=25.1"
+    :url "https://repo.or.cz/arduino-mode.git"
+    :added "2023-11-25"
+    :emacs>= 25.1
+    :ensure t
+    :after spinner)
+  
   (leaf dedis
     :quelpa (dedis :repo "Kyure-A/dedis.el"
 		   :fetcher github
@@ -692,6 +701,14 @@ https://qiita.com/ballforest/items/5a76f284af254724144a"
       :ensure t :require t
       :after ivy))
 
+  (leaf multiple-cursors
+    :doc "Multiple cursors for Emacs."
+    :req "cl-lib-0.5"
+    :tag "cursors" "editing"
+    :url "https://github.com/magnars/multiple-cursors.el"
+    :added "2023-12-04"
+    :ensure t)
+  
   (leaf mwim
     :doc "Switch between the beginning/end of line or code (enhanced C-a, C-e)"
     :tag "convenience"
@@ -905,7 +922,13 @@ https://qiita.com/ballforest/items/5a76f284af254724144a"
     :emacs>= 25.1
     :ensure t :require t
     :after compat git-commit magit-section with-editor
-    :hook (magit-status-mode . my/toggle-centaur-tabs-local-mode))
+    :hook (magit-status-mode . my/toggle-centaur-tabs-local-mode)
+    :config
+    (when (string< "28.1" "29")
+      ;; https://github.com/emacs-mirror/emacs/blob/281be72422f42fcc84d43f50723a3e91b7d03cbc/lisp/emacs-lisp/seq.el#L709
+      (defun seq-keep (function sequence)
+	"Apply FUNCTION to SEQUENCE and return the list of all the non-nil results."
+	(delq nil (seq-map function sequence)))))
   
   (leaf oj
     :doc "Competitive programming tools client for AtCoder, Codeforces"
@@ -1161,7 +1184,28 @@ https://qiita.com/ballforest/items/5a76f284af254724144a"
       :ensure t
       :require t
       :after trinary lsp-mode ansi lgr
-      :config (elsa-lsp-register))
+      :config
+      
+      (elsa-lsp-register)
+      
+      (leaf flycheck-elsa
+	:doc "Flycheck for Elsa"
+	:req "emacs-25" "flycheck-0.14" "seq-2.0"
+	:tag "convenience" "emacs>=25"
+	:url "https://github.com/emacs-elsa/flycheck-elsa"
+	:added "2023-12-23"
+	:emacs>= 25
+	:ensure t
+	:after flycheck))
+
+    (leaf elquery
+      :doc "The HTML library for elisp"
+      :req "emacs-25.1" "dash-2.13.0"
+      :tag "webscale" "tools" "hypermedia" "html" "emacs>=25.1"
+      :url "https://github.com/AdamNiederer/elquery"
+      :added "2023-12-23"
+      :emacs>= 25.1
+      :ensure t)
     
     (leaf f
       :doc "Modern API for working with files and directories"
@@ -1212,6 +1256,25 @@ https://qiita.com/ballforest/items/5a76f284af254724144a"
 	:after keg flycheck))
 
     (leaf lisp-interaction :bind (:lisp-interaction-mode-map ("C-j" . eval-print-last-sexp)))
+
+    (leaf package-build
+      :doc "Tools for assembling a package archive"
+      :req "emacs-26.1"
+      :tag "tools" "maint" "emacs>=26.1"
+      :url "https://github.com/melpa/package-build"
+      :added "2023-11-15"
+      :emacs>= 26.1
+      :ensure t)
+
+    (leaf package-lint
+      :doc "A linting library for elisp package authors"
+      :req "cl-lib-0.5" "emacs-24.4" "let-alist-1.0.6" "compat-29.1"
+      :tag "lisp" "emacs>=24.4"
+      :url "https://github.com/purcell/package-lint"
+      :added "2023-11-15"
+      :emacs>= 24.4
+      :ensure t
+      :after compat)
     
     (leaf promise
       :doc "Promises/A+"
@@ -1331,6 +1394,26 @@ https://qiita.com/ballforest/items/5a76f284af254724144a"
     (org-enforce-todo-dependencies . t)
     (org-support-shift-select . t)
     :config
+
+    (leaf org-roam
+      :doc "A database abstraction layer for Org-mode"
+      :req "emacs-26.1" "dash-2.13" "org-9.4" "emacsql-20230228" "magit-section-3.0.0"
+      :tag "convenience" "roam" "org-mode" "emacs>=26.1"
+      :url "https://github.com/org-roam/org-roam"
+      :added "2023-12-02"
+      :emacs>= 26.1
+      :ensure t
+      :after org emacsql magit-section)
+
+    (leaf org-roam-ui
+      :doc "User Interface for Org-roam"
+      :req "emacs-27.1" "org-roam-2.0.0" "simple-httpd-20191103.1446" "websocket-1.13"
+      :tag "outlines" "files" "emacs>=27.1"
+      :url "https://github.com/org-roam/org-roam-ui"
+      :added "2023-12-02"
+      :emacs>= 27.1
+      :ensure t
+      :after org-roam websocket)
     
     (leaf org-modern
       :doc "Modern looks for Org"
@@ -1514,7 +1597,6 @@ https://qiita.com/ballforest/items/5a76f284af254724144a"
       :after flycheck typescript-mode
       :hook
       (typescript-mode-hook . tide-start)
-      (before-save-hook . tide-format-before-save)
       :custom
       (tide-node-executable . "~/.asdf/installs/nodejs/19.0.0/bin/node")
       :config

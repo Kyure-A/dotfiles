@@ -31,9 +31,9 @@ local = "~/dotfiles/.config/zsh/sync"
 use = ["*.zsh"]
 apply = ["source"]
 
-[plugins.enhancd]
-github = "b4b4r07/enhancd"
-apply = ["defer"]
+# [plugins.enhancd]
+# github = "b4b4r07/enhancd"
+# apply = ["defer"]
 
 [plugins.kill-ring]
 github = "Kyure-A/zsh-universal-kill-ring"
