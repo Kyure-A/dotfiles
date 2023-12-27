@@ -261,11 +261,6 @@ https://qiita.com/ballforest/items/5a76f284af254724144a"
     :ensure t
     :after spinner)
   
-  (leaf dedis
-    :quelpa (dedis :repo "Kyure-A/dedis.el"
-		   :fetcher github
-		   :upgrade t))
-  
   (leaf elcord
     :doc "Allows you to integrate Rich Presence from Discord"
     :req "emacs-25.1"
@@ -373,16 +368,6 @@ https://qiita.com/ballforest/items/5a76f284af254724144a"
      ("s" . tetris-move-down)
      ("d" . tetris-move-right)
      ("RET" . tetris-move-bottom)))
-
-  (leaf onlyonce
-    :require t
-    :quelpa (onlyonce :repo "Kyure-A/onlyonce.el"
-		      :fetcher github
-		      :upgrade t)
-    :config
-    (onlyonce-add 'fira-code-mode-install-fonts)
-    (onlyonce-add 'all-the-icons-install-fonts)
-    (onlyonce-startup))
   )
 
 ;; ---------------------------------------------------------------------------------------------- ;;
