@@ -49,31 +49,21 @@
 #+end_src
 ** Disable warning
 #+begin_src emacs-lisp
-  (byte-compile-warnings . '(not cl-functions obsolete))
-  (debug-on-error . nil)
+  (setq byte-compile-warnings '(not cl-functions obsolete))
+  (setq debug-on-error nil)
 #+end_src
 ** Disable screen splitting
 Dired で画面分割されないようにする
 #+begin_src emacs-lisp
   (set-frame-parameter nil 'unsplittable t)
 #+end_src
-** install straight.el
+** install el-clone
 
-https://github.com/radian-software/straight.el#getting-started
+https://github.com/takeokunn/el-clone?tab=readme-ov-file#install
 
 #+begin_src emacs-lisp
-  (defvar bootstrap-version)
-  (let ((bootstrap-file
-	  (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-	 (bootstrap-version 6))
-     (unless (file-exists-p bootstrap-file)
-       (with-current-buffer
-	   (url-retrieve-synchronously
-	    "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-	    'silent 'inhibit-cookies)
-	 (goto-char (point-max))
-	 (eval-print-last-sexp)))
-     (load bootstrap-file nil 'nomessage))
+  (unless (package-installed-p 'el-clone)
+    (package-vc-install "https://github.com/takeokunn/el-clone.git"))
 #+end_src
 
 ** with-delayed-execution
@@ -147,7 +137,7 @@ https://www.emacswiki.org/emacs/BackwardKillLine
     (interactive "p")
     (kill-line (- 1 arg)))
 #+end_src
-
+*** others
 #+begin_src emacs-lisp
   (defun toggle-centaur-tabs-local-mode()
     (interactive)
@@ -380,22 +370,25 @@ leaf で書いた *global-set-key 節を書き直すのがだるいので、名�
 #+end_src
 ** File history
 #+begin_src emacs-lisp
-(leaf recentf
-    :tag "builtin"
-    :global-minor-mode t
-    :custom
-    (recentf-max-saved-items . 150)
-    (recentf-auto-cleanup . 'never)
-    (recentf-exclude
-     '("/dotfiles" "/recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.tmp/"))
-    :config
-    (leaf recentf-ext
-      :doc "Recentf extensions"
-      :tag "files" "convenience"
-      :url "http://www.emacswiki.org/cgi-bin/wiki/download/recentf-ext.el"
-      :ensure t :require t))
+(with-delayed-execution-priority-high)
 
-  (leaf save-place-mode :tag "builtin" :global-minor-mode t)
+
+(leaf recentf
+			:tag "builtin"
+			:global-minor-mode t
+			:custom
+			(recentf-max-saved-items . 150)
+			(recentf-auto-cleanup . 'never)
+			(recentf-exclude
+			 '("/dotfiles" "/recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.tmp/"))
+			:config
+			(leaf recentf-ext
+			  :doc "Recentf extensions"
+			  :tag "files" "convenience"
+			  :url "http://www.emacswiki.org/cgi-bin/wiki/download/recentf-ext.el"
+			  :ensure t :require t))
+
+		      (leaf save-place-mode :tag "builtin" :global-minor-mode t)
 #+end_src
 ** Auto save
 #+begin_src emacs-lisp
@@ -925,18 +918,6 @@ leaf で書いた *global-set-key 節を書き直すのがだるいので、名�
     (display-buffer-function . 'popwin:display-buffer)
     (popwin:special-display-config  . t)
     (popwin:popup-window-position . 'bottom))
-#+end_src
-** onlyonce
-#+begin_src emacs-lisp
-  (leaf onlyonce
-    :require t
-    :quelpa (onlyonce :repo "Kyure-A/onlyonce.el"
-		      :fetcher github
-		      :upgrade t)
-    :config
-    (onlyonce-add 'fira-code-mode-install-fonts)
-    (onlyonce-add 'all-the-icons-install-fonts)
-    (onlyonce-startup))
 #+end_src
 * Input
 ** Japanese
@@ -2053,8 +2034,7 @@ Nand2tetris で使った
     :url "https://github.com/Malabarba/aggressive-indent-mode"
     :emacs>= 24.3
     :ensure t
-    :require t
-    :global-minor-mode global-aggressive-indent-mode)
+    :require t)
 #+end_src
 * Syntax Checker
 #+begin_src emacs-lisp
