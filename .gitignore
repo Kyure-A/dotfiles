@@ -11,6 +11,7 @@
 !/.config/**
 !/.emacs.d/
 !/.emacs.d/early-init.el
+!/.emacs.d/early-init.org
 !/.emacs.d/elisp/
 !/.emacs.d/elisp/**
 !/.emacs.d/init.el
