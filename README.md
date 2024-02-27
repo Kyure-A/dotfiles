@@ -15,7 +15,8 @@
 
 - Editor:
 
-  <img alt="Emacs Icon" width="18px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/emacs/emacs.png" /> **Emacs** + **org-babel**
+  <img alt="Emacs Icon" width="18px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/emacs/emacs.png" /> **Emacs** +   <img alt="Org icon" width="18px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Org-mode-unicorn.svg/1024px-Org-mode-unicorn.svg.png" /> **org-babel**
+
 
 ![Emacs Screen Shot](./assets/emacs_screenshot.png)
 
