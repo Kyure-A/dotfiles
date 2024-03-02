@@ -17,6 +17,8 @@
 !/.emacs.d/README.org
 !/.emacs.d/snippets/
 !/.emacs.d/snippets/.keep
+!/.emacs.d/snippets/org-mode/emacs-lisp
+!/.emacs.d/snippets/org-mode/src
 !/.emacs.d/static/
 !/.emacs.d/static/**
 !/.emacs.d/templates/
