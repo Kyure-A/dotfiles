@@ -11,7 +11,7 @@
 	<img alt="pwsh icon" width="18px" src="https://learn.microsoft.com/ja-jp/powershell/media/index/ps_black_128.svg"> **pwsh** + <img alt="pwsh icon" width="18px" src="https://upload.wikimedia.org/wikipedia/commons/5/51/Windows_Terminal_logo.svg"> **Windows Terminal** + <img alt="Starship icon" width="18px" src="https://raw.githubusercontent.com/starship/starship/master/media/icon.png"> **Starship**
 	
 	- <img alt="Linux Icon" width="18px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/linux/linux.png" /> Linux: 
-	<img alt="zsh icon" width="18px" src="https://www.zsh.org/favicon.ico"> **zsh** + <img alt="Emacs Icon" width="18px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/emacs/emacs.png" /> **emacs-eat** + 🐚 **Sheldon** + <img alt="Starship icon" width="18px" src="https://raw.githubusercontent.com/starship/starship/master/media/icon.png"> **Starship**
+	<img alt="zsh icon" width="18px" src="https://www.zsh.org/favicon.ico"> **zsh** + 🐚 **Sheldon** + <img alt="Emacs Icon" width="18px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/emacs/emacs.png" /> **emacs-eat** + <img alt="Starship icon" width="18px" src="https://raw.githubusercontent.com/starship/starship/master/media/icon.png"> **Starship**
 
 - Editor:
 
